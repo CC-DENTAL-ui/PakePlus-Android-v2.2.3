@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>口腔助手 · 专业版</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif; background: linear-gradient(145deg, #eef2f7 0%, #f9fcff 100%); padding: 16px 12px 80px; color: #1e293b; font-size: 14px; line-height: 1.4; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .card { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(2px); border-radius: 28px; padding: 18px 16px; margin-bottom: 16px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02); border: 1px solid rgba(255, 255, 255, 0.6); transition: all 0.2s; }
+        .card-header { font-weight: 700; font-size: 18px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #0f7b8c; padding-left: 12px; color: #0c4e5c; }
+        .stats-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+        .stat-card { flex: 1; background: #ffffffdd; backdrop-filter: blur(4px); border-radius: 24px; padding: 12px 6px; text-align: center; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02); border: 1px solid #eef2f8; }
+        .stat-number { font-size: 28px; font-weight: 800; color: #0f7b8c; line-height: 1.2; }
+        .stat-label { font-size: 12px; color: #5b6e8c; margin-top: 4px; }
+        .progress-bar { background: #e2e8f0; border-radius: 30px; height: 6px; margin-top: 8px; overflow: hidden; }
+        .progress-fill { background: #0f7b8c; width: 0%; height: 100%; border-radius: 30px; }
+        .btn { background: #0f7b8c; border: none; color: white; padding: 10px 20px; border-radius: 60px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn-outline { background: transparent; border: 1.5px solid #cbd5e6; color: #2c3e50; box-shadow: none; }
+        .btn-sm { padding: 6px 14px; font-size: 12px; }
+        .btn-danger { background: #e25c5c; }
+        .btn-danger-outline { background: transparent; border: 1px solid #e25c5c; color: #e25c5c; }
+        .tab-bar { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 20px; padding-bottom: 6px; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+        .tab { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(4px); padding: 8px 16px; border-radius: 60px; font-weight: 600; font-size: 13px; white-space: nowrap; cursor: pointer; transition: 0.2s; color: #2c3e50; border: 1px solid #e2edf7; position: relative; }
+        .tab.active { background: #0f7b8c; color: white; border-color: #0f7b8c; box-shadow: 0 4px 12px rgba(15, 123, 140, 0.3); }
+        .badge { position: absolute; top: -6px; right: -6px; background: #e25c5c; color: white; font-size: 10px; font-weight: bold; min-width: 18px; height: 18px; border-radius: 30px; display: flex; align-items: center; justify-content: center; padding: 0 5px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
+        .modal-mask { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
+        .modal-container { background: white; width: 100%; max-width: 500px; border-radius: 36px; padding: 20px; max-height: 85vh; overflow-y: auto; box-shadow: 0 25px 40px rgba(0, 0, 0, 0.2); }
+        .form-group { margin-bottom: 16px; }
+        label { font-weight: 600; display: block; margin-bottom: 6px; font-size: 13px; color: #1e2a3e; }
+        input, select, textarea { width: 100%; padding: 12px 14px; border: 1.5px solid #e2e8f0; border-radius: 28px; font-size: 15px; background: #fefefe; transition: 0.2s; -webkit-appearance: none; appearance: none; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #0f7b8c; box-shadow: 0 0 0 3px rgba(15, 123, 140, 0.2); }
+        .patient-card, .order-card, .return-card, .appt-row { background: white; border-radius: 24px; padding: 14px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); border: 1px solid #eef2f8; transition: 0.1s; }
+        .debt-highlight { border-left: 5px solid #e25c5c; background: #fff8f8; }
+        .debt-tag { background: #e25c5c; color: white; font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 50px; display: inline-block; margin-left: 8px; }
+        .patient-name, .order-patient { font-weight: 700; font-size: 17px; color: #1f2e3d; }
+        .patient-meta, .order-meta, .return-meta { font-size: 12px; color: #5e6f8d; margin-top: 6px; display: flex; flex-wrap: wrap; gap: 10px; }
+        .status-tag { padding: 3px 10px; border-radius: 50px; font-size: 11px; font-weight: 500; display: inline-block; }
+        .status-0 { background: #fef9e3; color: #b85c00; }
+        .status-1 { background: #e0f2fe; color: #0369a1; }
+        .status-2 { background: #dcfce7; color: #15803d; }
+        .status-3 { background: #e0e7ff; color: #3730a3; }
+        .status-4 { background: #ffe4e2; color: #b91c1c; }
+        .status-5 { background: #f1f5f9; color: #4b5563; }
+        .filter-btn { background: #f1f5f9; border: none; padding: 6px 16px; border-radius: 40px; font-size: 12px; font-weight: 500; cursor: pointer; margin-right: 8px; margin-bottom: 8px; }
+        .filter-btn.active { background: #0f7b8c; color: white; }
+        .appointment-table, .project-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .appointment-table th, .appointment-table td, .project-table th, .project-table td { padding: 10px 4px; border-bottom: 1px solid #eef2f8; text-align: left; vertical-align: middle; }
+        .consultant-name { font-size: 15px; background: #eef2ff; padding: 6px 16px; border-radius: 40px; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; cursor: pointer; }
+        .reminder-badge { background: #fef3c7; color: #b45309; padding: 10px 14px; border-radius: 28px; font-size: 12px; margin-bottom: 16px; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .result-text { font-size: 11px; background: #eef2ff; border-radius: 20px; padding: 4px 10px; display: inline-block; margin-top: 6px; max-width: 100%; word-break: break-word; }
+        .time-stamp { font-size: 10px; color: #8ba0bc; }
+        .search-input { border-radius: 40px; background: #f8fafc; padding-left: 20px; margin-bottom: 14px; border: 1px solid #e2e8f0; font-size: 14px; }
+        .patient-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; flex-wrap: wrap; }
+        .phone-btn { background: #10b981; color: white; border: none; border-radius: 40px; padding: 4px 12px; font-size: 11px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; text-align: center; }
+        .suggestions { position: absolute; background: white; border: 1px solid #e2e8f0; border-radius: 20px; max-height: 200px; overflow-y: auto; width: 100%; z-index: 200; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        .suggestion-item { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+        .suggestion-item:hover { background: #f1f5f9; }
+        .relative { position: relative; }
+        button, .tab, .filter-btn, .suggestion-item { touch-action: manipulation; }
+        @media (max-width: 480px) { body { padding: 12px 10px 70px; } .card { padding: 14px 12px; } .stat-number { font-size: 24px; } .btn { padding: 8px 16px; font-size: 13px; } .btn-sm { padding: 5px 12px; } }
+        img, table, .container { max-width: 100%; }
+        .appointment-table td, .appointment-table th { word-break: break-word; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card" style="background: linear-gradient(135deg, #ffffff 0%, #f9fcff 100%);">
+        <div class="flex-between">
+            <div class="consultant-name" id="consultantName">我的工作室 ✎</div>
+            <button class="btn-sm btn-outline" id="setGoalBtn" style="font-size:12px;">🎯 月度目标</button>
+        </div>
+        <div class="stats-row" style="margin-top: 12px;">
+            <div class="stat-card"><div class="stat-number" id="todayAmount">0</div><div class="stat-label">今日实收</div></div>
+            <div class="stat-card"><div class="stat-number" id="monthAmount">0</div><div class="stat-label">本月实收</div></div>
+            <div class="stat-card"><div class="stat-number" id="targetPercent">0%</div><div class="stat-label">目标进度</div><div class="progress-bar"><div class="progress-fill" id="targetFill"></div></div></div>
+        </div>
+    </div>
+    <div id="reminderCard" style="display:none;" class="card reminder-badge"></div>
+    <div class="tab-bar">
+        <div class="tab active" data-tab="dashboard">📋 工作台</div>
+        <div class="tab" data-tab="patients">👥 患者</div>
+        <div class="tab" data-tab="appointments">📅 预约</div>
+        <div class="tab" data-tab="returns">📞 回访</div>
+        <div class="tab" data-tab="orders">💰 开单</div>
+        <div class="tab" data-tab="projects">💊 项目</div>
+        <div class="tab" data-tab="stats">📊 统计</div>
+    </div>
+    <div id="dashboardPanel" class="panel"><div class="card"><div class="card-header">📅 今日预约</div><div id="todayApptList">加载中...</div></div><div class="card"><div class="card-header">⚡ 快捷操作</div><div style="display:flex; gap:12px; flex-wrap:wrap;"><button class="btn" id="quickPatient">+ 新建患者</button><button class="btn" id="quickAppt">+ 新建预约</button><button class="btn" id="quickOrder">+ 开单</button></div></div></div>
+    <div id="patientsPanel" class="panel" style="display:none"><div class="card"><div class="flex-between"><span class="card-header">👥 我的患者</span><div><button class="btn-sm btn-outline" id="importPatientsBtn">📂 导入</button><button class="btn-sm btn-outline" id="exportPatientsBtn" style="margin-left:8px;">📎 导出</button><button class="btn btn-sm" id="addPatientBtn" style="margin-left:8px;">+ 新建</button></div></div><input type="text" id="patientSearchInput" class="search-input" placeholder="🔍 搜索姓名或手机号" style="width:100%; margin-top: 6px; margin-bottom: 14px;"><div id="patientListContainer"></div></div></div>
+    <div id="appointmentsPanel" class="panel" style="display:none"><div class="card"><div class="flex-between"><span class="card-header">📆 预约记录</span><button class="btn btn-sm" id="addApptBtn">+ 新建</button></div><div style="overflow-x:auto;"><table class="appointment-table"><thead><tr><th>时间</th><th>患者</th><th>项目</th><th>医生</th><th>状态</th><th>操作</th></tr></thead><tbody id="apptTableBody"></tbody></table></div></div></div>
+    <div id="returnsPanel" class="panel" style="display:none"><div class="card"><div class="card-header">✅ 回访任务</div><div class="return-filters" id="returnFilters"><button class="filter-btn active" data-filter="pending">待回访</button><button class="filter-btn" data-filter="all">全部</button><button class="filter-btn" data-filter="completed">已完成</button></div><div id="returnListContainer"></div></div></div>
+    <div id="ordersPanel" class="panel" style="display:none"><div class="card"><div class="flex-between"><span class="card-header">💰 开单记录</span><button class="btn btn-sm" id="addOrderBtn">+ 开单</button></div><div id="orderListContainer"></div></div></div>
+    <div id="projectsPanel" class="panel" style="display:none"><div class="card"><div class="flex-between"><span class="card-header">📋 项目价格表</span><div><button class="btn-sm btn-outline" id="importProjectsBtn">📂 导入</button><button class="btn-sm btn-outline" id="exportProjectsBtn">📎 导出</button><button class="btn btn-sm" id="addProjectBtn" style="margin-left:8px;">+ 新增</button></div></div><div style="overflow-x:auto;"><table class="project-table"><thead><tr><th>项目名称</th><th>价格(元)</th><th>操作</th></tr></thead><tbody id="projectTableBody"></tbody></table></div></div></div>
+    <div id="statsPanel" class="panel" style="display:none"><div class="card"><div class="card-header">📊 月度业绩明细</div><div style="overflow-x:auto;"><table class="project-table"><thead><tr><th>月份</th><th>总实收(元)</th></tr></thead><tbody id="statsTableBody"></tbody></td></div><button id="exportStatsBtn" class="btn btn-sm" style="margin-top:16px;">📎 导出CSV</button></div></div>
+</div>
+
+<!-- 模态框 -->
+<div id="patientModal" class="modal-mask" style="display:none"><div class="modal-container"><h3 id="patientModalTitle">新建患者</h3><div class="form-group"><label>姓名 *</label><input id="patientName" placeholder="请输入姓名"></div><div class="form-group"><label>性别</label><select id="patientGender"><option value="1">男</option><option value="2">女</option></select></div><div class="form-group"><label>年龄</label><input id="patientAge" type="number" placeholder="年龄"></div><div class="form-group"><label>联系电话 *</label><input id="patientMobile" placeholder="11位手机号"></div><div class="form-group"><label>居住小区</label><input id="patientCommunity" placeholder="小区名称"></div><div class="form-group"><label>主诉</label><textarea id="patientComplaint" rows="2"></textarea></div><input type="hidden" id="editPatientId"><div style="display:flex; gap:12px; justify-content:flex-end;"><button class="btn-outline btn-sm" id="cancelPatientModal">取消</button><button class="btn btn-sm" id="submitPatientBtn">保存</button></div></div></div>
+
+<div id="apptModal" class="modal-mask" style="display:none"><div class="modal-container"><h3>新建预约</h3><div class="form-group"><label>选择患者 *</label><div class="relative"><input type="text" id="apptPatientSearch" placeholder="输入姓名或手机号搜索" autocomplete="off" class="search-input" style="margin-bottom:0;"><div id="apptPatientSuggestions" class="suggestions" style="display:none;"></div><input type="hidden" id="apptPatientId"></div></div><div class="form-group"><label>预约时间 *</label><input type="datetime-local" id="apptDateTime"></div><div class="form-group"><label>预约项目</label><select id="apptProjectId"></select></div><div class="form-group"><label>医生姓名</label><input id="apptDoctor"></div><div style="display:flex; gap:12px; justify-content:flex-end;"><button class="btn-outline btn-sm" id="cancelApptModal">取消</button><button class="btn btn-sm" id="submitApptBtn">保存</button></div></div></div>
+
+<div id="orderModal" class="modal-mask" style="display:none"><div class="modal-container"><h3>开单</h3><div class="form-group"><label>选择患者 *</label><div class="relative"><input type="text" id="orderPatientSearch" placeholder="输入姓名或手机号搜索" autocomplete="off" class="search-input" style="margin-bottom:0;"><div id="orderPatientSuggestions" class="suggestions" style="display:none;"></div><input type="hidden" id="orderPatientId"></div></div><div class="form-group"><label>项目 *</label><select id="orderProjectId"></select></div><div class="form-group"><label>应收 (元)</label><input type="number" id="orderAmount" step="0.01" readonly></div><div class="form-group"><label>本次实收 (元)</label><input type="number" id="orderPaid" step="0.01" value="0"></div><div class="form-group"><label>备注</label><input id="orderDiscount"></div><div style="display:flex; gap:12px; justify-content:flex-end;"><button class="btn-outline btn-sm" id="cancelOrderModal">取消</button><button class="btn btn-sm" id="submitOrderBtn">确认开单</button></div></div></div>
+
+<div id="paymentModal" class="modal-mask" style="display:none"><div class="modal-container"><h3>收费</h3><div class="form-group"><label>患者</label><span id="paymentPatientName"></span></div><div class="form-group"><label>应收金额</label><span id="paymentTotalAmount"></span> 元</div><div class="form-group"><label>已收金额</label><span id="paymentPaidAmount"></span> 元</div><div class="form-group"><label>本次收费金额</label><input type="number" id="paymentAmount" step="0.01" value="0"></div><div style="display:flex; gap:12px; justify-content:flex-end;"><button class="btn-outline btn-sm" id="cancelPaymentModal">取消</button><button class="btn btn-sm" id="submitPaymentBtn">确认收款</button></div></div></div>
+<div id="passwordModal" class="modal-mask" style="display:none"><div class="modal-container"><h3>输入密码</h3><div class="form-group"><label>密码</label><input type="password" id="passwordInput" placeholder="请输入密码"></div><div style="display:flex; gap:12px; justify-content:flex-end;"><button class="btn-outline btn-sm" id="cancelPwdModal">取消</button><button class="btn btn-sm" id="confirmPwdBtn">确认</button></div></div></div>
+
+<script>
+    (function(){
+        // ==================== 北京时间工具 ====================
+        function getBeijingDate() { const now = new Date(); const bj = new Date(now.toLocaleString("en-US", {timeZone: "Asia/Shanghai"})); return bj; }
+        function getLocalToday() { const bj = getBeijingDate(); return `${bj.getFullYear()}-${String(bj.getMonth()+1).padStart(2,'0')}-${String(bj.getDate()).padStart(2,'0')}`; }
+        function getBeijingDateTimeStr() { const bj = getBeijingDate(); return `${bj.getFullYear()}-${String(bj.getMonth()+1).padStart(2,'0')}-${String(bj.getDate()).padStart(2,'0')} ${String(bj.getHours()).padStart(2,'0')}:${String(bj.getMinutes()).padStart(2,'0')}`; }
+        function getTomorrowStr() { const tomorrow = getBeijingDate(); tomorrow.setDate(tomorrow.getDate()+1); return `${tomorrow.getFullYear()}-${String(tomorrow.getMonth()+1).padStart(2,'0')}-${String(tomorrow.getDate()).padStart(2,'0')}`; }
+
+        // ==================== IndexedDB 封装 ====================
+        const DB_NAME = 'DentalPro_V12', DB_VERSION = 21;
+        let db = null;
+        function openDB() { return new Promise((resolve, reject) => { const req = indexedDB.open(DB_NAME, DB_VERSION); req.onerror = reject; req.onsuccess = () => { db = req.result; resolve(db); }; req.onupgradeneeded = (e) => { const d = e.target.result; if(!d.objectStoreNames.contains('patients')) d.createObjectStore('patients', { keyPath: 'id', autoIncrement: true }); if(!d.objectStoreNames.contains('appointments')) d.createObjectStore('appointments', { keyPath: 'id', autoIncrement: true }); if(!d.objectStoreNames.contains('returnVisits')) d.createObjectStore('returnVisits', { keyPath: 'id', autoIncrement: true }); if(!d.objectStoreNames.contains('orders')) d.createObjectStore('orders', { keyPath: 'id', autoIncrement: true }); if(!d.objectStoreNames.contains('projects')) d.createObjectStore('projects', { keyPath: 'id', autoIncrement: true }); if(!d.objectStoreNames.contains('payments')) d.createObjectStore('payments', { keyPath: 'id', autoIncrement: true }); if(!d.objectStoreNames.contains('config')) d.createObjectStore('config', { keyPath: 'key' }); }; }); }
+        async function getStore(storeName, mode='readonly') { if(!db) await openDB(); return db.transaction(storeName,mode).objectStore(storeName); }
+        async function getAll(storeName) { const store=await getStore(storeName); return new Promise(r=>{const req=store.getAll(); req.onsuccess=()=>r(req.result);}); }
+        async function putData(storeName,data) { const store=await getStore(storeName,'readwrite'); return new Promise(r=>{const req=store.put(data); req.onsuccess=()=>r(req.result);}); }
+        async function deleteData(storeName,id) { const store=await getStore(storeName,'readwrite'); return new Promise(r=>{const req=store.delete(id); req.onsuccess=()=>r();}); }
+        async function getConfig(key,def) { const store=await getStore('config'); return new Promise(r=>{const req=store.get(key); req.onsuccess=()=>r(req.result?req.result.value:def);}); }
+        async function setConfig(key,val) { const store=await getStore('config','readwrite'); await store.put({key,value:val}); }
+
+        let monthlyTarget = 50000, consultantName = '我的工作室';
+        async function loadConfig() { monthlyTarget = await getConfig('monthlyTarget',50000); consultantName = await getConfig('consultantName','我的工作室'); document.getElementById('consultantName').innerHTML = consultantName + ' ✎'; }
+        async function setConsultantName(newName) { consultantName = newName; await setConfig('consultantName', newName); document.getElementById('consultantName').innerHTML = consultantName + ' ✎'; }
+
+        // ==================== 密码通用 ====================
+        let pendingPasswordCallback = null;
+        function showPasswordDialog(callback) { pendingPasswordCallback = callback; document.getElementById('passwordModal').style.display='flex'; document.getElementById('passwordInput').value=''; }
+        function hidePasswordDialog() { document.getElementById('passwordModal').style.display='none'; pendingPasswordCallback = null; }
+        window.confirmPasswordAction = async function() { const pwd = document.getElementById('passwordInput').value; if(pendingPasswordCallback) await pendingPasswordCallback(pwd); hidePasswordDialog(); };
+        document.getElementById('confirmPwdBtn').onclick = () => confirmPasswordAction();
+        document.getElementById('cancelPwdModal').onclick = hidePasswordDialog;
+
+        // ==================== 回访管理 ====================
+        async function generateInitialReturnIfNoOrderToday(patientId, patientName) {
+            const today = getLocalToday();
+            const orders = await getAll('orders');
+            const hasOrderToday = orders.some(o => o.patientId === patientId && o.datetime && o.datetime.startsWith(today));
+            if(hasOrderToday) return;
+            const existing = await getAll('returnVisits');
+            const tomorrow = getTomorrowStr();
+            const already = existing.some(r => r.patientId === patientId && r.planDate === tomorrow);
+            if(!already) {
+                await putData('returnVisits', { patientId, patientName, type:'initial', planDate: tomorrow, status:0, result:null });
+            }
+        }
+        async function generateOrderReturnVisitAndReplaceInitial(orderPatientId, orderPatientName) {
+            const tomorrow = getTomorrowStr();
+            const returns = await getAll('returnVisits');
+            for(let r of returns) {
+                if(r.patientId === orderPatientId && r.type === 'initial' && r.planDate === tomorrow) {
+                    await deleteData('returnVisits', r.id);
+                }
+            }
+            const hasOrderReturn = returns.some(r => r.patientId === orderPatientId && r.type === 'order' && r.planDate === tomorrow);
+            if(!hasOrderReturn) {
+                await putData('returnVisits', { patientId: orderPatientId, patientName: orderPatientName, type:'order', planDate: tomorrow, status:0, result:null, sourceOrder: true });
+            }
+        }
+
+        // ==================== 患者管理 ====================
+        async function isPatientDuplicate(name, mobile, excludeId=null) {
+            const patients = await getAll('patients');
+            return patients.some(p => p.name === name && p.mobile === mobile && (excludeId === null || p.id !== excludeId));
+        }
+        window.addOrUpdatePatient = async function(patientData, isEdit=false) {
+            if(!isEdit) {
+                if(await isPatientDuplicate(patientData.name, patientData.mobile)) { alert('患者已存在（姓名+手机号重复）'); return false; }
+                patientData.createdAt = getBeijingDateTimeStr();
+                const newId = await putData('patients', patientData);
+                await generateInitialReturnIfNoOrderToday(newId, patientData.name);
+                return true;
+            } else {
+                await putData('patients', patientData);
+                return true;
+            }
+        };
+        async function deletePatientWithPwd(id) {
+            showPasswordDialog(async (pwd)=>{
+                if(pwd !== '12349876') { alert('密码错误，删除失败'); return; }
+                const appts = await getAll('appointments'); for(let a of appts.filter(a=>a.patientId===id)) await deleteData('appointments', a.id);
+                const rvs = await getAll('returnVisits'); for(let r of rvs.filter(r=>r.patientId===id)) await deleteData('returnVisits', r.id);
+                const orders = await getAll('orders'); for(let o of orders.filter(o=>o.patientId===id)) { let payments = await getAll('payments'); for(let p of payments.filter(p=>p.orderId===o.id)) await deleteData('payments', p.id); await deleteData('orders', o.id); }
+                await deleteData('patients', id);
+                await renderAll();
+                alert('已删除');
+            });
+        }
+        window.delPatient = (id) => deletePatientWithPwd(id);
+        window.editPatientById = async function(id) {
+            const patients = await getAll('patients');
+            const p = patients.find(p=>p.id===id);
+            if(p){
+                document.getElementById('patientModalTitle').innerText = '编辑患者';
+                document.getElementById('patientName').value = p.name;
+                document.getElementById('patientGender').value = p.gender;
+                document.getElementById('patientAge').value = p.age;
+                document.getElementById('patientMobile').value = p.mobile;
+                document.getElementById('patientCommunity').value = p.community||'';
+                document.getElementById('patientComplaint').value = p.complaint||'';
+                document.getElementById('editPatientId').value = p.id;
+                document.getElementById('patientModal').style.display='flex';
+            }
+        };
+        async function submitPatientForm() {
+            const id = document.getElementById('editPatientId').value;
+            const name = document.getElementById('patientName').value.trim();
+            const gender = parseInt(document.getElementById('patientGender').value);
+            const age = parseInt(document.getElementById('patientAge').value);
+            const mobile = document.getElementById('patientMobile').value.trim();
+            const community = document.getElementById('patientCommunity').value.trim();
+            const complaint = document.getElementById('patientComplaint').value.trim();
+            if(!name||!mobile||!age) { alert('请填写姓名/年龄/手机号'); return; }
+            if(!/^1[3-9]\d{9}$/.test(mobile)) { alert('手机号格式错误'); return; }
+            if(!id && (await getAll('patients')).some(p=>p.mobile===mobile)) { alert('手机号已存在'); return; }
+            if(id && await isPatientDuplicate(name, mobile, parseInt(id))) { alert('姓名手机号重复'); return; }
+            const patientData = { name, gender, age, mobile, community, complaint };
+            if(id) { patientData.id = parseInt(id); patientData.createdAt = (await getAll('patients')).find(p=>p.id==id).createdAt; await putData('patients', patientData); }
+            else { await addOrUpdatePatient(patientData, false); }
+            document.getElementById('patientModal').style.display='none';
+            resetPatientForm();
+            await renderAll();
+        }
+        function resetPatientForm() { document.getElementById('patientModalTitle').innerText = '新建患者'; document.getElementById('editPatientId').value=''; document.getElementById('patientName').value=''; document.getElementById('patientGender').value='1'; document.getElementById('patientAge').value=''; document.getElementById('patientMobile').value=''; document.getElementById('patientCommunity').value=''; document.getElementById('patientComplaint').value=''; }
+
+        // ==================== 导入导出 ====================
+        async function exportPatients() { showPasswordDialog(async (pwd)=>{ if(pwd !== '12349876'){ alert('密码错误'); return; } const patients = await getAll('patients'); const csv = "\uFEFF姓名,性别,年龄,手机号,小区,主诉,建档时间\n"+patients.map(p=>`${p.name},${p.gender==1?'男':'女'},${p.age},${p.mobile},${p.community||''},${p.complaint||''},${p.createdAt||''}`).join("\n"); const blob = new Blob([csv],{type:"text/csv;charset=utf-8"}); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `患者数据_${getLocalToday()}.csv`; link.click(); alert('导出成功'); }); }
+        async function importPatients() { showPasswordDialog(async (pwd)=>{ if(pwd !== '12349876'){ alert('密码错误'); return; } const input = document.createElement('input'); input.type = 'file'; input.accept = '.csv'; input.onchange = async (e)=>{ const file = e.target.files[0]; const text = await file.text(); const lines = text.split('\n').slice(1); for(let line of lines){ if(!line.trim()) continue; const parts = line.split(','); if(parts.length<3) continue; const name = parts[0]; const gender = parts[1]=='男'?1:2; const age = parseInt(parts[2]); const mobile = parts[3]; const community = parts[4]; const complaint = parts[5]; if(name && mobile && !isNaN(age)){ const exists = (await getAll('patients')).some(p=>p.mobile===mobile); if(!exists) await addOrUpdatePatient({ name, gender, age, mobile, community, complaint, createdAt: getBeijingDateTimeStr() }, false); } } alert('导入完成'); renderAll(); }; input.click(); }); }
+        async function exportProjects() { showPasswordDialog(async (pwd)=>{ if(pwd !== '123987'){ alert('密码错误'); return; } const projects = await getAll('projects'); const csv = "\uFEFF项目名称,价格\n"+projects.map(p=>`${p.name},${p.price}`).join("\n"); const blob = new Blob([csv],{type:"text/csv"}); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `项目价格_${getLocalToday()}.csv`; link.click(); }); }
+        async function importProjects() { showPasswordDialog(async (pwd)=>{ if(pwd !== '123987'){ alert('密码错误'); return; } const input = document.createElement('input'); input.type='file'; input.accept='.csv'; input.onchange=async(e)=>{ const file=e.target.files[0]; const text=await file.text(); const lines=text.split('\n').slice(1); for(let line of lines){ if(!line.trim()) continue; const [name,price]=line.split(','); if(name && !isNaN(parseFloat(price))){ await putData('projects',{name,price:parseFloat(price)}); } } alert('导入完成'); renderAll(); }; input.click(); }); }
+
+        // ==================== 其他辅助函数 ====================
+        async function getPatientDebt(patientId){ const orders = await getAll('orders'); let debt=0; for(let o of orders.filter(o=>o.patientId===patientId)){ const payments = await getAll('payments'); const paid = payments.filter(p=>p.orderId===o.id).reduce((s,p)=>s+p.amount,0); debt += (o.totalAmount - paid); } return debt; }
+        async function updateOrderDebt(order){ const payments = await getAll('payments'); const paid = payments.filter(p=>p.orderId===order.id).reduce((s,p)=>s+p.amount,0); order.debt = order.totalAmount - paid; order.status = order.debt<=0?'已结清':(paid>0?'部分欠费':'未收费'); await putData('orders',order); return order; }
+        async function onNoShow(apptId) { const appt = (await getAll('appointments')).find(a=>a.id===apptId); if(appt){ const patient = (await getAll('patients')).find(p=>p.id===appt.patientId); if(patient) await generateOrderReturnVisitAndReplaceInitial(patient.id, patient.name); } }
+        async function afterOrderCreated(patientId, patientName) { await generateOrderReturnVisitAndReplaceInitial(patientId, patientName); }
+
+        // ==================== 患者列表渲染（含一键预约和一键开单） ====================
+        let currentPatientSearchKeyword = '';
+        async function renderPatientList() {
+            const patients = await getAll('patients');
+            const keyword = currentPatientSearchKeyword.trim().toLowerCase();
+            let filtered = patients;
+            if(keyword) filtered = patients.filter(p => p.name.toLowerCase().includes(keyword) || p.mobile.includes(keyword));
+            let pHtml = '';
+            for(let p of filtered) {
+                const debt = await getPatientDebt(p.id);
+                pHtml += `<div class="patient-card ${debt>0?'debt-highlight':''}">
+                            <div class="flex-between"><div class="patient-name">${escapeHtml(p.name)}</div><div>${p.gender==1?'男':'女'} · ${p.age}岁</div></div>
+                            <div class="patient-meta">📞 ${p.mobile} 🏘️ ${escapeHtml(p.community||'')}</div>
+                            <div class="patient-meta">📋 ${escapeHtml(p.complaint?.substring(0,36)||'')}</div>
+                            <div class="time-stamp">建档: ${p.createdAt||''}</div>
+                            ${debt>0?`<div class="debt-tag">⚠️ 欠费 ${debt.toFixed(2)} 元</div>`:''}
+                            <div class="patient-actions">
+                                <button class="btn-sm btn-outline" onclick="quickApptWithPatient(${p.id})">📅 预约</button>
+                                <button class="btn-sm btn-outline" onclick="quickOrderWithPatient(${p.id})">💰 开单</button>
+                                <button class="btn-sm btn-outline" onclick="editPatientById(${p.id})">编辑</button>
+                                <button class="btn-sm btn-danger-outline" onclick="delPatient(${p.id})">删除</button>
+                            </div>
+                        </div>`;
+            }
+            document.getElementById('patientListContainer').innerHTML = pHtml || '<div style="text-align:center;padding:28px;">暂无患者</div>';
+        }
+        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+        // 一键预约、一键开单（修复异步加载项目列表的bug）
+        window.quickApptWithPatient = async function(patientId) {
+            await refreshApptSelects();   // 确保项目列表已加载
+            document.getElementById('apptModal').style.display = 'flex';
+            const patient = (await getAll('patients')).find(p=>p.id===patientId);
+            if(patient) {
+                document.getElementById('apptPatientSearch').value = `${patient.name} (${patient.mobile})`;
+                document.getElementById('apptPatientId').value = patient.id;
+            }
+            hideApptSuggestions();
+        };
+        window.quickOrderWithPatient = async function(patientId) {
+            await refreshOrderSelects();  // 确保项目列表已加载
+            document.getElementById('orderModal').style.display = 'flex';
+            const patient = (await getAll('patients')).find(p=>p.id===patientId);
+            if(patient) {
+                document.getElementById('orderPatientSearch').value = `${patient.name} (${patient.mobile})`;
+                document.getElementById('orderPatientId').value = patient.id;
+            }
+            hideOrderSuggestions();
+        };
+        window.callPatient = function(phone) { if(phone) window.location.href = "tel:" + phone; };
+
+        // ==================== 患者搜索通用组件 ====================
+        let allPatientsCache = [];
+        async function updatePatientsCache() { allPatientsCache = await getAll('patients'); }
+        function setupPatientSearch(inputId, suggestionsId, hiddenId) {
+            const input = document.getElementById(inputId);
+            const suggestionsDiv = document.getElementById(suggestionsId);
+            const hidden = document.getElementById(hiddenId);
+            if(!input) return;
+            input.addEventListener('input', async function(e) {
+                const keyword = e.target.value.trim().toLowerCase();
+                if(keyword === '') { suggestionsDiv.style.display = 'none'; return; }
+                await updatePatientsCache();
+                const filtered = allPatientsCache.filter(p => p.name.toLowerCase().includes(keyword) || p.mobile.includes(keyword));
+                if(filtered.length === 0) { suggestionsDiv.style.display = 'none'; return; }
+                suggestionsDiv.innerHTML = filtered.map(p => `<div class="suggestion-item" data-id="${p.id}" data-name="${escapeHtml(p.name)}" data-mobile="${p.mobile}">${escapeHtml(p.name)} (${p.mobile})</div>`).join('');
+                suggestionsDiv.style.display = 'block';
+                suggestionsDiv.querySelectorAll('.suggestion-item').forEach(el => {
+                    el.addEventListener('click', () => {
+                        const id = parseInt(el.dataset.id);
+                        const name = el.dataset.name;
+                        const mobile = el.dataset.mobile;
+                        input.value = `${name} (${mobile})`;
+                        hidden.value = id;
+                        suggestionsDiv.style.display = 'none';
+                    });
+                });
+            });
+            document.addEventListener('click', function(e) { if(!suggestionsDiv.contains(e.target) && e.target !== input) suggestionsDiv.style.display = 'none'; });
+        }
+        function hideApptSuggestions() { const div = document.getElementById('apptPatientSuggestions'); if(div) div.style.display = 'none'; }
+        function hideOrderSuggestions() { const div = document.getElementById('orderPatientSuggestions'); if(div) div.style.display = 'none'; }
+
+        // 刷新项目下拉框（异步完成后再打开模态框）
+        async function refreshApptSelects() {
+            const projects = await getAll('projects');
+            const projectSelect = document.getElementById('apptProjectId');
+            if(projectSelect) projectSelect.innerHTML = '<option value="">请选择项目</option>' + projects.map(p=>`<option value="${p.id}">${escapeHtml(p.name)}</option>`).join('');
+        }
+        async function refreshOrderSelects() {
+            const projects = await getAll('projects');
+            const projectSelect = document.getElementById('orderProjectId');
+            if(projectSelect) {
+                projectSelect.innerHTML = '<option value="">请选择项目</option>' + projects.map(p=>`<option value="${p.id}" data-price="${p.price}">${escapeHtml(p.name)} (${p.price}元)</option>`).join('');
+                projectSelect.onchange = function(){ const opt = projectSelect.options[projectSelect.selectedIndex]; if(opt && opt.dataset.price) document.getElementById('orderAmount').value = opt.dataset.price; };
+            }
+        }
+        async function showApptModalAndRefresh() { await refreshApptSelects(); document.getElementById('apptModal').style.display='flex'; document.getElementById('apptPatientSearch').value = ''; document.getElementById('apptPatientId').value = ''; hideApptSuggestions(); }
+        async function showOrderModalAndRefresh() { await refreshOrderSelects(); document.getElementById('orderModal').style.display='flex'; document.getElementById('orderPatientSearch').value = ''; document.getElementById('orderPatientId').value = ''; hideOrderSuggestions(); }
+
+        // ==================== 回访完成（支持自定义） ====================
+        window.completeReturn = async function(id) {
+            const result = prompt('回访结果:\n1 满意\n2 一般\n3 不满意\n4 未接通\n5 拒绝\n6 自定义', '1');
+            if(result === null) return;
+            const rvs = await getAll('returnVisits');
+            const r = rvs.find(r=>r.id===id);
+            if(!r) return;
+            let resultCode = parseInt(result);
+            let customText = '';
+            if(resultCode === 6) {
+                customText = prompt('请输入自定义回访内容:', '');
+                if(customText === null) return;
+                resultCode = 6;
+            } else if(isNaN(resultCode) || resultCode < 1 || resultCode > 5) {
+                alert('请输入1-6的数字');
+                return;
+            }
+            r.status = 1;
+            r.result = resultCode;
+            r.customResult = customText || '';
+            await putData('returnVisits', r);
+            await renderAll();
+        };
+
+        // ==================== 主渲染函数 ====================
+        async function renderAll() {
+            const patients = await getAll('patients'); const appts = await getAll('appointments'); const orders = await getAll('orders'); const payments = await getAll('payments'); const returns = await getAll('returnVisits');
+            const today = getLocalToday(); const curMonth = today.slice(0,7);
+            let todayTotal=0, monthTotal=0; for(let p of payments){ if(p.date===today) todayTotal+=p.amount; if(p.date.startsWith(curMonth)) monthTotal+=p.amount; }
+            document.getElementById('todayAmount').innerText = todayTotal.toFixed(2); document.getElementById('monthAmount').innerText = monthTotal.toFixed(2);
+            const percent = monthlyTarget>0?Math.min(100, (monthTotal/monthlyTarget*100)):0; document.getElementById('targetPercent').innerText = Math.floor(percent)+'%'; document.getElementById('targetFill').style.width = percent+'%';
+            await renderPatientList();
+            // 预约表格
+            let aHtml=''; for(let a of appts.filter(a=>a.status!==5)){ const p=patients.find(p=>p.id===a.patientId); const debt=await getPatientDebt(a.patientId); aHtml+=`<tr style="${debt>0?'background:#fff8f8;':''}"><td>${a.datetime.replace('T',' ')}</td><td>${p?.name||'?'} ${debt>0?`<span class="debt-tag">欠${debt.toFixed(2)}</span>`:''}</td><td>${a.item||''}</td><td>${a.doctorName||''}</td><td><select onchange="updateApptStatus(${a.id}, this.value)">${['待确认','已确认','就诊中','已完成','爽约','已离开'].map((s,i)=>`<option ${a.status==i?'selected':''} value="${i}">${s}</option>`).join('')}</select></td><td><button class="btn-sm btn-outline" onclick="editAppt(${a.id})">编辑</button> <button class="btn-sm btn-danger-outline" onclick="delAppt(${a.id})">删</button></td></tr>`; }
+            document.getElementById('apptTableBody').innerHTML = aHtml||'<tr><td colspan="6">暂无预约</td></tr>';
+            // 回访列表
+            const filter = window.currentReturnFilter || 'pending';
+            let filtered = returns; if(filter==='pending') filtered=returns.filter(r=>r.status===0); if(filter==='completed') filtered=returns.filter(r=>r.status===1);
+            let rHtml=''; const resultMap={1:'满意',2:'一般',3:'不满意',4:'未接通',5:'拒绝',6:'自定义'};
+            for(let r of filtered){ 
+                const p=patients.find(p=>p.id===r.patientId); 
+                const phone = p?.mobile || '';
+                const callButton = phone ? `<a href="tel:${phone}" class="phone-btn" style="text-decoration:none; display:inline-block;">📞 拨打</a>` : '';
+                let resultDisplay = '';
+                if(r.status===1) {
+                    if(r.result === 6 && r.customResult) {
+                        resultDisplay = `<div class="result-text">结果: ${escapeHtml(r.customResult)}</div>`;
+                    } else if(r.result && resultMap[r.result]) {
+                        resultDisplay = `<div class="result-text">结果: ${resultMap[r.result]}</div>`;
+                    }
+                }
+                rHtml+=`<div class="return-card"><div class="flex-between"><div><strong>${p?.name||'?'}</strong> ${callButton}</div><div>${r.status===0?'<span class="status-tag status-0">待回访</span>':'<span class="status-tag status-3">已完成</span>'}</div></div><div>📅 ${r.planDate} · ${ {initial:'初诊',order:'诊疗回访',post:'术后',noShow:'爽约'}[r.type] || '回访' }</div>${resultDisplay}${r.status===0?`<div style="margin-top:12px;"><button class="btn-sm" onclick="completeReturn(${r.id})">完成回访</button></div>`:''}</div>`; 
+            }
+            document.getElementById('returnListContainer').innerHTML = rHtml||'<div>暂无回访</div>';
+            // 订单列表
+            let oHtml=''; for(let o of orders){ const p=patients.find(p=>p.id===o.patientId); const paid = payments.filter(p=>p.orderId===o.id).reduce((s,p)=>s+p.amount,0); const debt=o.totalAmount-paid; const displayDateTime = o.datetime ? o.datetime : (o.date ? o.date + ' 00:00' : '未知时间'); oHtml+=`<div class="order-card ${debt>0?'debt-highlight':''}"><div class="flex-between"><div><strong>${p?.name||'?'}</strong></div><div>${displayDateTime}</div></div><div>项目:${o.item} 应收:¥${o.totalAmount.toFixed(2)} 已收:¥${paid.toFixed(2)} 欠费:¥${debt.toFixed(2)}</div>${debt>0?`<div class="debt-tag">未结清 ${debt.toFixed(2)}元</div>`:''}<div><button class="btn-sm" onclick="showPaymentModal(${o.id})">💰收费</button> <button class="btn-sm btn-danger-outline" onclick="delOrder(${o.id})">删除</button></div></div>`; }
+            document.getElementById('orderListContainer').innerHTML = oHtml||'<div>暂无开单</div>';
+            // 项目列表
+            let projects = await getAll('projects'); let pjHtml=''; for(let pro of projects) pjHtml+=`<tr><td>${escapeHtml(pro.name)}</td><td>${pro.price}</td><td><button class="btn-sm btn-outline" onclick="editProject(${pro.id})">编辑</button> <button class="btn-sm btn-danger-outline" onclick="delProject(${pro.id})">删除</button></td></tr>`;
+            document.getElementById('projectTableBody').innerHTML = pjHtml||'<tr><td colspan="3">暂无项目</td></tr>';
+            // 今日预约
+            const todayAppts = appts.filter(a=>a.datetime?.split('T')[0]===today && a.status!==5);
+            let tHtml=''; for(let a of todayAppts){ const p=patients.find(p=>p.id===a.patientId); const debt=await getPatientDebt(a.patientId); tHtml+=`<div class="appt-row ${debt>0?'debt-highlight':''}"><div><strong>${a.datetime.substring(11,16)}</strong> ${p?.name} · ${a.item||''} ${debt>0?`<span class="debt-tag">欠${debt.toFixed(2)}</span>`:''}</div></div>`; }
+            document.getElementById('todayApptList').innerHTML = tHtml||'✨ 今日无预约';
+            // 统计
+            const monthMap={}; for(let p of payments){ const m=p.date.slice(0,7); monthMap[m]=(monthMap[m]||0)+p.amount; }
+            let sHtml=''; for(let [m,t] of Object.entries(monthMap)) sHtml+=`<tr><td>${m}</td><td>${t.toFixed(2)}</td></tr>`;
+            document.getElementById('statsTableBody').innerHTML = sHtml||'<tr><td colspan="2">暂无数据</td></tr>';
+            // 角标
+            document.querySelectorAll('.badge').forEach(b=>b.remove());
+            const pendingAppts = appts.filter(a=>a.status!==3 && a.status!==4 && a.status!==5).length;
+            const pendingReturns = returns.filter(r=>r.status===0).length;
+            if(pendingAppts>0){ const badge = document.createElement('span'); badge.className='badge'; badge.innerText = pendingAppts>99?'99+':pendingAppts; document.querySelector('.tab[data-tab="appointments"]').appendChild(badge); }
+            if(pendingReturns>0){ const badge = document.createElement('span'); badge.className='badge'; badge.innerText = pendingReturns>99?'99+':pendingReturns; document.querySelector('.tab[data-tab="returns"]').appendChild(badge); }
+        }
+
+        // 其他全局函数
+        window.updateApptStatus = async function(id, status){ const appts=await getAll('appointments'); const a=appts.find(a=>a.id===id); if(a){ a.status=parseInt(status); await putData('appointments',a); if(a.status===4) await onNoShow(id); renderAll(); } };
+        window.editAppt = async function(id){ const appts=await getAll('appointments'); const a=appts.find(a=>a.id===id); if(a){ const newDT=prompt('新时间(YYYY-MM-DDTHH:MM)', a.datetime); if(newDT) a.datetime=newDT; const newItem=prompt('项目',a.item); if(newItem) a.item=newItem; await putData('appointments',a); renderAll(); } };
+        window.delAppt = async (id)=>{ if(confirm('删除预约')){ await deleteData('appointments',id); renderAll(); } };
+        window.delOrder = async (id)=>{ if(confirm('删除订单')){ const payments=await getAll('payments'); for(let p of payments.filter(p=>p.orderId===id)) await deleteData('payments',p.id); await deleteData('orders',id); renderAll(); } };
+        window.showPaymentModal = async(orderId)=>{ window.currentOrderId=orderId; const order=(await getAll('orders')).find(o=>o.id===orderId); const patient=(await getAll('patients')).find(p=>p.id===order.patientId); const paid=(await getAll('payments')).filter(p=>p.orderId===orderId).reduce((s,p)=>s+p.amount,0); document.getElementById('paymentPatientName').innerText=patient?.name; document.getElementById('paymentTotalAmount').innerText=order.totalAmount.toFixed(2); document.getElementById('paymentPaidAmount').innerText=paid.toFixed(2); document.getElementById('paymentAmount').value=''; document.getElementById('paymentModal').style.display='flex'; };
+        document.getElementById('submitPaymentBtn').onclick=async()=>{ const amount=parseFloat(document.getElementById('paymentAmount').value); if(amount>0){ const order=(await getAll('orders')).find(o=>o.id===window.currentOrderId); const paid=(await getAll('payments')).filter(p=>p.orderId===window.currentOrderId).reduce((s,p)=>s+p.amount,0); if(paid+amount<=order.totalAmount){ await putData('payments',{orderId:window.currentOrderId,amount,date:getLocalToday()}); await updateOrderDebt(order); renderAll(); document.getElementById('paymentModal').style.display='none'; } else alert('超出应收'); } };
+        document.getElementById('cancelPaymentModal').onclick=()=>document.getElementById('paymentModal').style.display='none';
+
+        // 绑定事件与初始化
+        document.getElementById('consultantName').onclick = ()=>{ const newName = prompt('修改工作室名称', consultantName); if(newName && newName.trim()) setConsultantName(newName.trim()); };
+        document.getElementById('setGoalBtn').onclick = async()=>{ const val = parseFloat(prompt('月度目标金额', monthlyTarget)); if(!isNaN(val)){ monthlyTarget=val; await setConfig('monthlyTarget',val); renderAll(); } };
+        document.getElementById('quickPatient').onclick = ()=>{ resetPatientForm(); document.getElementById('patientModal').style.display='flex'; };
+        document.getElementById('addPatientBtn').onclick = ()=>{ resetPatientForm(); document.getElementById('patientModal').style.display='flex'; };
+        document.getElementById('cancelPatientModal').onclick = ()=>document.getElementById('patientModal').style.display='none';
+        document.getElementById('submitPatientBtn').onclick = submitPatientForm;
+        document.getElementById('importPatientsBtn').onclick = importPatients;
+        document.getElementById('exportPatientsBtn').onclick = exportPatients;
+        document.getElementById('importProjectsBtn').onclick = importProjects;
+        document.getElementById('exportProjectsBtn').onclick = exportProjects;
+        document.getElementById('addProjectBtn').onclick = async()=>{ const name=prompt('项目名称'); if(name){ const price=parseFloat(prompt('价格')); if(!isNaN(price)){ await putData('projects',{name,price}); renderAll(); } } };
+        window.editProject = async(id)=>{ const projects=await getAll('projects'); const proj=projects.find(p=>p.id===id); if(proj){ const newName=prompt('新名称',proj.name); if(newName) proj.name=newName; const newPrice=parseFloat(prompt('新价格',proj.price)); if(!isNaN(newPrice)) proj.price=newPrice; await putData('projects',proj); renderAll(); } };
+        window.delProject = async(id)=>{ if(confirm('删除项目')){ await deleteData('projects',id); renderAll(); } };
+        document.getElementById('exportStatsBtn').onclick = async()=>{ const orders=await getAll('orders'); let csv="订单ID,日期时间,患者,项目,应收,已收,欠费\n"; for(let o of orders){ const paid=(await getAll('payments')).filter(p=>p.orderId===o.id).reduce((s,p)=>s+p.amount,0); const patient=(await getAll('patients')).find(p=>p.id===o.patientId); csv+=`${o.id},${o.datetime||o.date},${patient?.name||''},${o.item},${o.totalAmount},${paid},${o.totalAmount-paid}\n`; } const blob=new Blob(["\uFEFF"+csv],{type:"text/csv"}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download=`业绩_${getLocalToday()}.csv`; link.click(); };
+        function bindTabs(){ const tabs=document.querySelectorAll('.tab'); const panels=['dashboardPanel','patientsPanel','appointmentsPanel','returnsPanel','ordersPanel','projectsPanel','statsPanel']; tabs.forEach((tab,idx)=>{ tab.addEventListener('click',()=>{ tabs.forEach(t=>t.classList.remove('active')); tab.classList.add('active'); panels.forEach((p,i)=>document.getElementById(p).style.display=i===idx?'block':'none'); }); }); }
+        window.currentReturnFilter='pending';
+        function bindReturnFilters(){ document.querySelectorAll('#returnFilters .filter-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ document.querySelectorAll('#returnFilters .filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); window.currentReturnFilter=btn.getAttribute('data-filter'); renderAll(); }); }); }
+        const searchInput = document.getElementById('patientSearchInput'); if(searchInput) searchInput.addEventListener('input', (e) => { currentPatientSearchKeyword = e.target.value; renderPatientList(); });
+        document.getElementById('submitApptBtn').onclick = async()=>{ const patientId=parseInt(document.getElementById('apptPatientId').value); if(!patientId){ alert('请选择患者'); return; } const datetime=document.getElementById('apptDateTime').value; if(!datetime){ alert('请选择预约时间'); return; } const projectId=document.getElementById('apptProjectId').value; let item=''; if(projectId){ const projects=await getAll('projects'); const proj=projects.find(p=>p.id==projectId); if(proj) item=proj.name; } const doctor=document.getElementById('apptDoctor').value; const patient=(await getAll('patients')).find(p=>p.id===patientId); await putData('appointments',{patientId,datetime,item,doctorName:doctor,status:0,patientName:patient?.name}); document.getElementById('apptModal').style.display='none'; renderAll(); };
+        document.getElementById('cancelApptModal').onclick = ()=>document.getElementById('apptModal').style.display='none';
+        document.getElementById('quickAppt').onclick = showApptModalAndRefresh;
+        document.getElementById('addApptBtn').onclick = showApptModalAndRefresh;
+        document.getElementById('submitOrderBtn').onclick = async()=>{ const patientId=parseInt(document.getElementById('orderPatientId').value); if(!patientId){ alert('请选择患者'); return; } const projectId=document.getElementById('orderProjectId').value; if(!projectId){ alert('请选择项目'); return; } const paidNow=parseFloat(document.getElementById('orderPaid').value)||0; const projects=await getAll('projects'); const proj=projects.find(p=>p.id==projectId); if(!proj) return; const total=proj.price; const nowDateTime = getBeijingDateTimeStr(); const order = { patientId, datetime: nowDateTime, date: nowDateTime.split(' ')[0], totalAmount: total, item: proj.name, discountReason: document.getElementById('orderDiscount').value, paidAmount: paidNow, debt: total-paidNow, status: paidNow>=total?'已结清':(paidNow>0?'部分欠费':'未收费') }; const orderId = await putData('orders',order); if(paidNow>0) await putData('payments',{orderId,amount:paidNow,date:getLocalToday()}); const patient=(await getAll('patients')).find(p=>p.id===patientId); if(patient) await afterOrderCreated(patient.id, patient.name); document.getElementById('orderModal').style.display='none'; renderAll(); };
+        document.getElementById('cancelOrderModal').onclick = ()=>document.getElementById('orderModal').style.display='none';
+        document.getElementById('quickOrder').onclick = showOrderModalAndRefresh;
+        document.getElementById('addOrderBtn').onclick = showOrderModalAndRefresh;
+        setupPatientSearch('apptPatientSearch', 'apptPatientSuggestions', 'apptPatientId');
+        setupPatientSearch('orderPatientSearch', 'orderPatientSuggestions', 'orderPatientId');
+
+        window.addEventListener('DOMContentLoaded', async()=>{ await openDB(); await loadConfig(); let projs=await getAll('projects'); if(projs.length===0){ await putData('projects',{name:'种植',price:8000}); await putData('projects',{name:'洁牙',price:200}); await putData('projects',{name:'补牙',price:500}); } await renderAll(); bindTabs(); bindReturnFilters(); });
+    })();
+</script>
+</body>
+</html>
