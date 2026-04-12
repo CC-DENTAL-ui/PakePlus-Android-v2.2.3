@@ -52,6 +52,42 @@
         .progress-bar { background: #e2e8f0; border-radius: 30px; height: 6px; margin-top: 10px; overflow: hidden; }
         .progress-fill { background: #0f7b8c; width: 0%; height: 100%; border-radius: 30px; }
 
+        /* 按钮组 - 自适应等宽 */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .btn-group .btn, .btn-group .btn-sm, .btn-group .btn-outline {
+            flex: 1;
+            text-align: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .filter-group .filter-btn {
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* 阶段看板 */
+        .stage-board {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .stage-board .stat-card {
+            flex: 1;
+            min-width: 80px;
+        }
+
         /* 按钮 */
         .btn {
             background: #0f7b8c;
@@ -70,8 +106,6 @@
         .btn-outline { background: transparent; border: 1.5px solid #cbd5e1; color: #2c3e50; }
         .btn-sm { padding: 6px 14px; font-size: 12px; }
         .btn-danger-outline { background: transparent; border: 1px solid #e25c5c; color: #e25c5c; }
-        .voice-btn { background: #8b5cf6; color: white; border: none; border-radius: 40px; padding: 8px 16px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
-        .voice-btn:active { transform: scale(0.96); background: #7c3aed; }
 
         /* 标签栏 */
         .tab-bar {
@@ -131,7 +165,6 @@
         .debt-tag { background: #e25c5c; color: white; font-size: 10px; padding: 3px 10px; border-radius: 30px; display: inline-block; }
         .lost-badge { background: #6c757d; color: white; font-size: 10px; padding: 2px 10px; border-radius: 30px; margin-left: 8px; }
         .call-icon { background: #10b981; padding: 4px 10px; border-radius: 30px; font-size: 11px; cursor: pointer; display: inline-block; color: white; }
-        /* 按钮组：一行均匀分布 */
         .patient-actions {
             display: flex;
             flex-wrap: wrap;
@@ -146,24 +179,28 @@
             justify-content: center;
         }
 
-        /* 回访/订单卡片 */
+        /* 回访/订单卡片美化 */
         .return-card, .order-card, .appt-row {
             background: white;
             border-radius: 20px;
             padding: 14px;
             margin-bottom: 12px;
             border: 1px solid #edf2f7;
+            transition: 0.1s;
+        }
+        .return-card .flex-between, .order-card .flex-between {
+            margin-bottom: 8px;
         }
         .result-text { background: #eef2ff; border-radius: 20px; padding: 4px 12px; font-size: 11px; display: inline-block; margin-top: 8px; }
 
-        /* 表格 */
+        /* 表格样式：所有表头居中，单元格内容左对齐（保持数据可读） */
         .appointment-table, .project-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 12px;
         }
         .appointment-table th, .project-table th {
-            text-align: left;
+            text-align: center;          /* 表头居中 */
             padding: 12px 6px;
             background: #f8fafc;
             font-weight: 600;
@@ -172,7 +209,49 @@
         .appointment-table td, .project-table td {
             padding: 10px 6px;
             border-bottom: 1px solid #ecf3f9;
+            vertical-align: top;
+            text-align: left;            /* 内容左对齐 */
         }
+        /* 状态卡片独立行样式 */
+        .status-card-row td {
+            padding: 0 6px 12px 6px !important;
+            border-bottom: none;
+        }
+        .status-card {
+            border-radius: 20px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 4px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .status-label {
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .status-select {
+            background: white;
+            border: 1px solid rgba(0,0,0,0.15);
+            border-radius: 30px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        /* 不同状态背景色 */
+        .status-bg-0 { background: #fef9e3; border-left: 4px solid #f59e0b; }
+        .status-bg-1 { background: #e0f2fe; border-left: 4px solid #0ea5e9; }
+        .status-bg-2 { background: #dcfce7; border-left: 4px solid #10b981; }
+        .status-bg-3 { background: #e0e7ff; border-left: 4px solid #6366f1; }
+        .status-bg-4 { background: #ffe4e2; border-left: 4px solid #ef4444; }
+        .status-bg-5 { background: #f1f5f9; border-left: 4px solid #94a3b8; }
 
         /* 模态框 */
         .modal-mask {
@@ -209,7 +288,7 @@
         input:focus, select:focus { outline: none; border-color: #0f7b8c; }
 
         .search-input { border-radius: 40px; background: #ffffff; padding-left: 18px; margin-bottom: 16px; border: 1px solid #e2e8f0; }
-        .filter-btn { background: #f1f5f9; border: none; padding: 6px 18px; border-radius: 40px; font-size: 12px; cursor: pointer; margin-right: 8px; margin-bottom: 8px; }
+        .filter-btn { background: #f1f5f9; border: none; padding: 6px 18px; border-radius: 40px; font-size: 12px; cursor: pointer; }
         .filter-btn.active { background: #0f7b8c; color: white; }
         .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
         .suggestions { position: absolute; background: white; border-radius: 20px; max-height: 200px; overflow-y: auto; width: 100%; z-index: 200; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
@@ -222,6 +301,9 @@
             .patient-avatar { width: 36px; height: 36px; font-size: 14px; }
             .patient-name { font-size: 16px; }
             .patient-actions .btn-sm { min-width: 65px; }
+            .btn-group .btn, .btn-group .btn-sm { font-size: 12px; padding: 8px 12px; }
+            .filter-group .filter-btn { font-size: 11px; padding: 6px 12px; }
+            .status-card { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
@@ -248,18 +330,32 @@
         <div class="tab" data-tab="stats">📊 统计</div>
     </div>
     <div id="dashboardPanel" class="panel">
+        <div class="card"><div class="card-header">⚡ 快捷操作</div><div class="btn-group"><button class="btn" id="quickPatient">+ 新建患者</button><button class="btn" id="quickAppt">+ 新建预约</button><button class="btn" id="quickOrder">+ 开单</button></div></div>
         <div class="card"><div class="card-header">📅 今日预约</div><div id="todayApptList"></div></div>
         <div class="card"><div class="card-header">✅ 待回访提醒</div><div id="todayReturnList"></div></div>
-        <div class="card"><div class="card-header">📈 患者阶段看板</div><div id="stageBoard"></div></div>
-        <div class="card"><div class="card-header">⚡ 快捷操作</div><div style="display:flex; gap:12px; flex-wrap:wrap;"><button class="btn" id="quickPatient">+ 新建患者</button><button class="btn" id="quickAppt">+ 新建预约</button><button class="btn" id="quickOrder">+ 开单</button><button id="voiceBtn" class="voice-btn" style="touch-action: manipulation;">🎤 按住 说话建档</button></div></div>
+        <div class="card"><div class="card-header">📈 患者阶段看板</div><div id="stageBoard" class="stage-board"></div></div>
     </div>
     <div id="patientsPanel" class="panel" style="display:none">
-        <div class="card"><div class="flex-between"><span class="card-header">👥 我的患者</span><div><button class="btn-sm btn-outline" id="importPatientsBtn">📂 导入</button><button class="btn-sm btn-outline" id="exportPatientsBtn">📎 导出</button><button class="btn btn-sm" id="addPatientBtn">+ 新建</button></div></div><div style="margin-bottom: 12px;"><button id="filterDebtBtn" class="filter-btn">💸 只看欠费</button><button id="filterLostBtn" class="filter-btn">⚠️ 流失患者(>15天)</button><button id="clearFiltersBtn" class="filter-btn">✨ 全部患者</button></div><input type="text" id="patientSearchInput" class="search-input" placeholder="🔍 搜索姓名或手机号"><div id="patientListContainer"></div></div>
+        <div class="card">
+            <div class="flex-between"><span class="card-header">👥 我的患者</span></div>
+            <div class="btn-group">
+                <button class="btn-sm btn-outline" id="importPatientsBtn">📂 导入</button>
+                <button class="btn-sm btn-outline" id="exportPatientsBtn">📎 导出</button>
+                <button class="btn btn-sm" id="addPatientBtn">+ 新建</button>
+            </div>
+            <div class="filter-group">
+                <button id="filterDebtBtn" class="filter-btn">💸 只看欠费</button>
+                <button id="filterLostBtn" class="filter-btn">⚠️ 流失患者(>15天)</button>
+                <button id="clearFiltersBtn" class="filter-btn">✨ 全部患者</button>
+            </div>
+            <input type="text" id="patientSearchInput" class="search-input" placeholder="🔍 搜索姓名或手机号">
+            <div id="patientListContainer"></div>
+        </div>
     </div>
-    <div id="appointmentsPanel" class="panel" style="display:none"><div class="card"><div class="flex-between"><span class="card-header">📆 预约记录</span><button class="btn btn-sm" id="addApptBtn">+ 新建</button></div><div style="overflow-x:auto;"><table class="appointment-table"><thead><tr><th>时间</th><th>患者</th><th>项目</th><th>医生</th><th>状态</th><th>操作</th></tr></thead><tbody id="apptTableBody"></tbody></table></div></div></div>
-    <div id="returnsPanel" class="panel" style="display:none"><div class="card"><div class="card-header">✅ 回访任务</div><div class="return-filters" id="returnFilters"><button class="filter-btn active" data-filter="pending">待回访</button><button class="filter-btn" data-filter="all">全部</button><button class="filter-btn" data-filter="completed">已完成</button></div><div id="returnListContainer"></div></div></div>
+    <div id="appointmentsPanel" class="panel" style="display:none"><div class="card"><div class="flex-between"><span class="card-header">📆 预约记录</span><button class="btn btn-sm" id="addApptBtn">+ 新建</button></div><div style="overflow-x:auto;"><table class="appointment-table"><thead><tr><th>时间</th><th>患者</th><th>项目</th><th>医生</th><th>操作</th></tr></thead><tbody id="apptTableBody"></tbody></table></div></div></div>
+    <div id="returnsPanel" class="panel" style="display:none"><div class="card"><div class="card-header">✅ 回访任务</div><div class="return-filters filter-group" id="returnFilters"><button class="filter-btn active" data-filter="pending">待回访</button><button class="filter-btn" data-filter="all">全部</button><button class="filter-btn" data-filter="completed">已完成</button></div><div id="returnListContainer"></div></div></div>
     <div id="ordersPanel" class="panel" style="display:none"><div class="card"><div class="flex-between"><span class="card-header">💰 开单记录</span><button class="btn btn-sm" id="addOrderBtn">+ 开单</button></div><div id="orderListContainer"></div></div></div>
-    <div id="projectsPanel" class="panel" style="display:none"><div class="card"><div class="flex-between"><span class="card-header">📋 项目价格表</span><div><button class="btn-sm btn-outline" id="importProjectsBtn">📂 导入</button><button class="btn-sm btn-outline" id="exportProjectsBtn">📎 导出</button><button class="btn btn-sm" id="addProjectBtn">+ 新增</button></div></div><div style="overflow-x:auto;"><table class="project-table"><thead><tr><th>项目名称</th><th>价格(元)</th><th>操作</th></tr></thead><tbody id="projectTableBody"></tbody></table></div></div></div>
+    <div id="projectsPanel" class="panel" style="display:none"><div class="card"><div class="flex-between"><span class="card-header">📋 项目价格表</span></div><div class="btn-group"><button class="btn-sm btn-outline" id="importProjectsBtn">📂 导入</button><button class="btn-sm btn-outline" id="exportProjectsBtn">📎 导出</button><button class="btn btn-sm" id="addProjectBtn">+ 新增</button></div><div style="overflow-x:auto;"><table class="project-table"><thead><tr><th>项目名称</th><th>价格(元)</th><th>操作</th></tr></thead><tbody id="projectTableBody"></tbody></table></div></div></div>
     <div id="statsPanel" class="panel" style="display:none"><div class="card"><div class="card-header">📊 月度业绩明细</div><div style="overflow-x:auto;"><table class="project-table"><thead><tr><th>月份</th><th>总实收(元)</th></tr></thead><tbody id="statsTableBody"></tbody></table></div><button id="exportStatsBtn" class="btn btn-sm" style="margin-top:16px;">📎 导出CSV</button></div></div>
 </div>
 
@@ -280,7 +376,7 @@
         function daysBetween(dateStr) { const today = getLocalToday(); return Math.floor((new Date(today) - new Date(dateStr)) / (1000*3600*24)); }
 
         // ==================== IndexedDB ====================
-        const DB_NAME = 'DentalPro_V25', DB_VERSION = 35;
+        const DB_NAME = 'DentalPro_V27', DB_VERSION = 37;
         let db = null;
         function openDB() { return new Promise((resolve, reject) => { const req = indexedDB.open(DB_NAME, DB_VERSION); req.onerror = reject; req.onsuccess = () => { db = req.result; resolve(db); }; req.onupgradeneeded = (e) => { const d = e.target.result; if(!d.objectStoreNames.contains('patients')) d.createObjectStore('patients', { keyPath: 'id', autoIncrement: true }); if(!d.objectStoreNames.contains('appointments')) d.createObjectStore('appointments', { keyPath: 'id', autoIncrement: true }); if(!d.objectStoreNames.contains('returnVisits')) d.createObjectStore('returnVisits', { keyPath: 'id', autoIncrement: true }); if(!d.objectStoreNames.contains('orders')) d.createObjectStore('orders', { keyPath: 'id', autoIncrement: true }); if(!d.objectStoreNames.contains('projects')) d.createObjectStore('projects', { keyPath: 'id', autoIncrement: true }); if(!d.objectStoreNames.contains('payments')) d.createObjectStore('payments', { keyPath: 'id', autoIncrement: true }); if(!d.objectStoreNames.contains('config')) d.createObjectStore('config', { keyPath: 'key' }); }; }); }
         async function getAll(storeName) { const store = db.transaction(storeName,'readonly').objectStore(storeName); return new Promise(r=>{const req=store.getAll(); req.onsuccess=()=>r(req.result);}); }
@@ -307,85 +403,13 @@
             return patients.some(p => (p.name === name || p.mobile === mobile) && (excludeId === null || p.id !== excludeId));
         }
 
-        // 密码验证通用
-        async function verifyPassword(pwd, correct) { return pwd === correct; }
-
-        // 患者导入导出
+        // 密码验证及导入导出保持原样
         async function exportPatients() { const pwd = prompt('请输入导出密码:'); if(pwd !== '12349876') { alert('密码错误'); return; } const patients = await getAll('patients'); const csv = "\uFEFF姓名,性别,年龄,手机号,小区,主诉,建档时间\n"+patients.map(p=>`${p.name},${p.gender==1?'男':'女'},${p.age},${p.mobile},${p.community||''},${p.complaint||''},${p.createdAt||''}`).join("\n"); const blob = new Blob([csv],{type:"text/csv;charset=utf-8"}); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `患者数据_${getLocalToday()}.csv`; link.click(); alert('导出成功'); }
         async function importPatients() { const pwd = prompt('请输入导入密码:'); if(pwd !== '12349876') { alert('密码错误'); return; } const input = document.createElement('input'); input.type = 'file'; input.accept = '.csv'; input.onchange = async (e)=>{ const file = e.target.files[0]; const text = await file.text(); const lines = text.split('\n').slice(1); for(let line of lines){ if(!line.trim()) continue; const parts = line.split(','); if(parts.length<3) continue; const name = parts[0]; const gender = parts[1]=='男'?1:2; const age = parseInt(parts[2]); const mobile = parts[3]; const community = parts[4]; const complaint = parts[5]; if(name && mobile && !isNaN(age)){ const exists = (await getAll('patients')).some(p=>p.mobile===mobile || p.name===name); if(!exists) await putData('patients',{ name, gender, age, mobile, community, complaint, createdAt: getBeijingDateTimeStr(), lastActiveDate: getLocalToday() }); } } alert('导入完成'); renderAll(); }; input.click(); }
         async function exportProjects() { const pwd = prompt('请输入项目导出密码:'); if(pwd !== '123987') { alert('密码错误'); return; } const projects = await getAll('projects'); const csv = "\uFEFF项目名称,价格\n"+projects.map(p=>`${p.name},${p.price}`).join("\n"); const blob = new Blob([csv],{type:"text/csv"}); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `项目价格_${getLocalToday()}.csv`; link.click(); }
         async function importProjects() { const pwd = prompt('请输入项目导入密码:'); if(pwd !== '123987') { alert('密码错误'); return; } const input = document.createElement('input'); input.type='file'; input.accept='.csv'; input.onchange=async(e)=>{ const file=e.target.files[0]; const text=await file.text(); const lines=text.split('\n').slice(1); for(let line of lines){ if(!line.trim()) continue; const [name,price]=line.split(','); if(name && !isNaN(parseFloat(price))){ await putData('projects',{name,price:parseFloat(price)}); } } alert('导入完成'); renderAll(); }; input.click(); }
 
-        async function renderPatientList() {
-            let patients = await getAll('patients');
-            let keyword = document.getElementById('patientSearchInput').value.trim().toLowerCase();
-            let filtered = patients;
-            if(keyword) filtered = filtered.filter(p => p.name.toLowerCase().includes(keyword) || p.mobile.includes(keyword));
-            const filterType = window.currentPatientFilter || 'all';
-            if(filterType === 'debt') { let debtMap = new Map(); for(let p of filtered) { let d=await getPatientDebt(p.id); if(d>0) debtMap.set(p.id,d); } filtered = filtered.filter(p=>debtMap.has(p.id)); }
-            else if(filterType === 'lost') { let lostMap = new Map(); for(let p of filtered) if(await isLostPatient(p)) lostMap.set(p.id,true); filtered = filtered.filter(p=>lostMap.has(p.id)); }
-            else if(filterType === 'new') { filtered = filtered.filter(async p => { const debt=await getPatientDebt(p.id); const lost=await isLostPatient(p); const days=p.createdAt?daysBetween(p.createdAt):999; return days<=7 && debt===0 && !lost && p.intentLevel!=='高' && p.intentLevel!=='中'; }); }
-            else if(filterType === 'highIntent') filtered = filtered.filter(p=>p.intentLevel==='高');
-            else if(filterType === 'midIntent') filtered = filtered.filter(p=>p.intentLevel==='中');
-            let html='';
-            for(let p of filtered) {
-                const debt = await getPatientDebt(p.id);
-                const lost = await isLostPatient(p);
-                const initial = p.name.charAt(0);
-                html += `<div class="patient-card ${debt>0?'debt-highlight':''}">
-                            <div class="flex-between">
-                                <div class="patient-name">
-                                    <div class="patient-avatar">${initial}</div>
-                                    <div>${escapeHtml(p.name)} <span style="font-size:13px; font-weight:normal;">${p.gender==1?'男':'女'} · ${p.age}岁</span>${lost?`<span class="lost-badge">流失15天+</span>`:''}</div>
-                                </div>
-                                <div><span class="call-icon" onclick="callPatient('${p.mobile}')">📞 拨打</span></div>
-                            </div>
-                            <div class="patient-meta">📞 ${p.mobile} &nbsp;|&nbsp; 🏘️ ${escapeHtml(p.community||'')}</div>
-                            <div class="patient-meta">📋 ${escapeHtml(p.complaint?.substring(0,40)||'')}</div>
-                            <div class="patient-meta">🏷️ 阶段: ${p.intentLevel ? (p.intentProject?`意向:${p.intentProject}(${p.intentLevel})`:'意向跟进中') : (debt>0?'欠费跟进':(lost?'流失待激活':'常规维护'))}</div>
-                            <div class="time-stamp">最后互动: ${p.lastActiveDate||'从未'} | 建档: ${p.createdAt||''}</div>
-                            ${debt>0?`<div class="debt-tag">⚠️ 欠费 ${debt.toFixed(2)} 元</div>`:''}
-                            <div class="patient-actions">
-                                <button class="btn-sm btn-outline" onclick="quickApptWithPatient(${p.id})">📅 预约</button>
-                                <button class="btn-sm btn-outline" onclick="quickOrderWithPatient(${p.id})">💰 开单</button>
-                                <button class="btn-sm btn-outline" onclick="editPatientById(${p.id})">编辑</button>
-                                <button class="btn-sm btn-danger-outline" onclick="delPatient(${p.id})">删除</button>
-                            </div>
-                        </div>`;
-            }
-            document.getElementById('patientListContainer').innerHTML = html || '<div style="text-align:center;padding:40px;">暂无患者</div>';
-        }
-
-        async function renderStageBoard() {
-            const patients = await getAll('patients');
-            let newConsult=0, high=0, mid=0, debt=0, lost=0;
-            for(let p of patients) {
-                const d = await getPatientDebt(p.id);
-                const l = await isLostPatient(p);
-                if(l) lost++;
-                else if(d>0) debt++;
-                else if(p.intentLevel === '高') high++;
-                else if(p.intentLevel === '中') mid++;
-                else { const days = p.createdAt?daysBetween(p.createdAt):999; if(days<=7) newConsult++; else newConsult++; }
-            }
-            const board = `<div style="display:flex; gap:12px; flex-wrap:wrap;">
-                <div class="stat-card" data-stage="new"><div class="stat-number">${newConsult}</div><div>新咨询(7天)</div></div>
-                <div class="stat-card" data-stage="highIntent"><div class="stat-number">${high}</div><div>高意向</div></div>
-                <div class="stat-card" data-stage="midIntent"><div class="stat-number">${mid}</div><div>中意向</div></div>
-                <div class="stat-card" data-stage="debt"><div class="stat-number">${debt}</div><div>欠费跟进</div></div>
-                <div class="stat-card" data-stage="lost"><div class="stat-number">${lost}</div><div>流失待激活</div></div>
-            </div>`;
-            document.getElementById('stageBoard').innerHTML = board;
-            document.querySelectorAll('#stageBoard .stat-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const stage = card.dataset.stage;
-                    document.querySelector('.tab[data-tab="patients"]').click();
-                    window.currentPatientFilter = stage;
-                    renderPatientList();
-                });
-            });
-        }
-
+        // 全局渲染 (预约状态卡片独立行，原状态列已删除，表头居中通过CSS已实现)
         async function renderAll() {
             await openDB();
             const patients = await getAll('patients'); const appts = await getAll('appointments'); const orders = await getAll('orders'); const payments = await getAll('payments'); const returns = await getAll('returnVisits');
@@ -394,82 +418,60 @@
             document.getElementById('todayAmount').innerText = todayTotal.toFixed(2); document.getElementById('monthAmount').innerText = monthTotal.toFixed(2);
             const percent = monthlyTarget>0?Math.min(100, (monthTotal/monthlyTarget*100)):0; document.getElementById('targetPercent').innerText = Math.floor(percent)+'%'; document.getElementById('targetFill').style.width = percent+'%';
             await renderPatientList(); await renderStageBoard();
-            // 预约表
-            let aHtml=''; const statusMap=['待确认','已确认','就诊中','已完成','爽约','已离开']; const colors=['#fef9e3','#e0f2fe','#dcfce7','#e0e7ff','#ffe4e2','#f1f5f9'];
-            for(let a of appts.filter(a=>a.status!==5)){ const p=patients.find(p=>p.id===a.patientId); const debt=await getPatientDebt(a.patientId); aHtml+=`<tr style="${debt>0?'background:#fff8f8':''}"><td>${a.datetime.replace('T',' ')}</td><td>${p?.name||'?'} ${debt>0?`<span class="debt-tag">欠${debt.toFixed(2)}</span>`:''}</td><td>${a.item||''}</td><td>${a.doctorName||''}</td><td><select style="background:${colors[a.status]}; border-radius:20px; padding:4px 8px;" onchange="updateApptStatus(${a.id}, this.value)">${statusMap.map((s,i)=>`<option ${a.status==i?'selected':''} value="${i}">${s}</option>`).join('')}</select></td><td><button class="btn-sm btn-outline" onclick="editApptById(${a.id})">编辑</button> <button class="btn-sm btn-danger-outline" onclick="delAppt(${a.id})">删</button></td></tr>`; }
-            document.getElementById('apptTableBody').innerHTML = aHtml||'<tr><td colspan="6">暂无预约</td></tr>';
-            // 回访列表
-            const filter = window.returnFilter || 'pending';
-            let filtered = returns; if(filter==='pending') filtered=returns.filter(r=>r.status===0); if(filter==='completed') filtered=returns.filter(r=>r.status===1);
-            let rHtml='';
-            const nowDate = getLocalToday();
-            for(let r of filtered){ 
-                const p=patients.find(p=>p.id===r.patientId); 
-                const name = p?.name || r.patientName || '?'; 
-                const phone = p?.mobile || ''; 
-                const isDue = (r.planDate <= nowDate);
-                rHtml+=`<div class="return-card"><div class="flex-between"><div><strong>${escapeHtml(name)}</strong> ${phone?`<a href="tel:${phone}" class="phone-btn">📞</a>`:''}</div><div>${r.status===0?'<span class="status-tag status-0">待回访</span>':'<span class="status-tag status-3">已完成</span>'}</div></div><div>📅 计划: ${r.planDate} · ${r.type||'回访'} ${r.completedAt?`<br>✅ 完成于: ${r.completedAt}`:''}</div>${r.status===1 && r.customResult?`<div class="result-text">结果: ${escapeHtml(r.customResult)}</div>`:''}${r.status===0 && isDue ? `<div style="margin-top:12px;"><button class="btn-sm" onclick="completeReturn(${r.id})">完成回访</button></div>` : ''}</div>`; 
+            
+            // 预约表格: 状态栏独立卡片形式 + 不同颜色提示 (单独一行)
+            const statusMap = ['待确认','已确认','就诊中','已完成','爽约','已离开'];
+            const statusBgClass = ['status-bg-0','status-bg-1','status-bg-2','status-bg-3','status-bg-4','status-bg-5'];
+            let aHtml = '';
+            for(let a of appts.filter(a=>a.status!==5)){
+                const p = patients.find(p=>p.id===a.patientId);
+                const debt = await getPatientDebt(a.patientId);
+                const debtHtml = debt>0 ? `<span class="debt-tag" style="margin-left:6px;">欠${debt.toFixed(2)}</span>` : '';
+                // 主行: 时间, 患者(含欠费), 项目, 医生, 操作 (共5列)
+                aHtml += `<tr style="${debt>0?'background:#fff8f8':''}">
+                    <td>${a.datetime.replace('T',' ')}</td>
+                    <td>${p?.name||'?'} ${debtHtml}</td>
+                    <td>${a.item||''}</td>
+                    <td>${a.doctorName||''}</td>
+                    <td><button class="btn-sm btn-outline" onclick="editApptById(${a.id})">编辑</button> <button class="btn-sm btn-danger-outline" onclick="delAppt(${a.id})">删</button></td>
+                </tr>`;
+                // 状态卡片独立行 (合并5列)
+                const statusText = statusMap[a.status] || '待确认';
+                const bgClass = statusBgClass[a.status] || 'status-bg-0';
+                aHtml += `<tr class="status-card-row"><td colspan="5" style="padding: 0 6px 12px 6px;">
+                    <div class="status-card ${bgClass}">
+                        <div class="status-label">📌 当前状态：<strong>${statusText}</strong></div>
+                        <select class="status-select" onchange="updateApptStatus(${a.id}, this.value)">
+                            ${statusMap.map((s,i)=>`<option value="${i}" ${a.status===i?'selected':''}>${s}</option>`).join('')}
+                        </select>
+                    </div>
+                </td></tr>`;
             }
+            document.getElementById('apptTableBody').innerHTML = aHtml || '<tr><td colspan="5">暂无预约</td></tr>';
+            
+            // 其他模块渲染保持原有逻辑 (不变)
+            let rHtml=''; const nowDate = getLocalToday(); let filtered = returns; const filter = window.returnFilter || 'pending';
+            if(filter==='pending') filtered=returns.filter(r=>r.status===0); if(filter==='completed') filtered=returns.filter(r=>r.status===1);
+            for(let r of filtered){ const p=patients.find(p=>p.id===r.patientId); const name = p?.name || r.patientName || '?'; const phone = p?.mobile || ''; const isDue = (r.planDate <= nowDate); rHtml+=`<div class="return-card"><div class="flex-between"><div><strong>${escapeHtml(name)}</strong> ${phone?`<a href="tel:${phone}" class="phone-btn">📞</a>`:''}</div><div>${r.status===0?'<span class="status-tag status-0">待回访</span>':'<span class="status-tag status-3">已完成</span>'}</div></div><div>📅 计划: ${r.planDate} · ${r.type||'回访'} ${r.completedAt?`<br>✅ 完成于: ${r.completedAt}`:''}</div>${r.status===1 && r.customResult?`<div class="result-text">结果: ${escapeHtml(r.customResult)}</div>`:''}${r.status===0 && isDue ? `<div style="margin-top:12px;"><button class="btn-sm" onclick="completeReturn(${r.id})">完成回访</button></div>` : ''}</div>`; }
             document.getElementById('returnListContainer').innerHTML = rHtml||'<div>暂无回访</div>';
-            // 订单列表 - 移除删除按钮
-            let oHtml=''; for(let o of orders){ const p=patients.find(p=>p.id===o.patientId); const paid = payments.filter(p=>p.orderId===o.id).reduce((s,p)=>s+p.amount,0); const debt=o.totalAmount-paid; oHtml+=`<div class="order-card ${debt>0?'debt-highlight':''}"><div class="flex-between"><div><strong>${p?.name||'?'}</strong></div><div>${o.datetime||o.date}</div></div><div>项目:${o.item} 应收:¥${o.totalAmount.toFixed(2)} 已收:¥${paid.toFixed(2)} 欠费:¥${debt.toFixed(2)}</div>${debt>0?`<div class="debt-tag">未结清 ${debt.toFixed(2)}元</div>`:''}<div><button class="btn-sm" onclick="showPaymentModal(${o.id})">💰收费</button></div></div>`; }
+            let oHtml=''; for(let o of orders){ const p=patients.find(p=>p.id===o.patientId); const paid = payments.filter(p=>p.orderId===o.id).reduce((s,p)=>s+p.amount,0); const debt=o.totalAmount-paid; oHtml+=`<div class="order-card ${debt>0?'debt-highlight':''}"><div class="flex-between"><div><strong>${p?.name||'?'}</strong></div><div>${o.datetime||o.date}</div></div><div>项目: ${o.item}</div><div>应收: ¥${o.totalAmount.toFixed(2)} &nbsp;|&nbsp; 已收: ¥${paid.toFixed(2)} &nbsp;|&nbsp; 欠费: ¥${debt.toFixed(2)}</div>${debt>0?`<div class="debt-tag">未结清 ${debt.toFixed(2)}元</div>`:''}<div style="margin-top:10px;"><button class="btn-sm" onclick="showPaymentModal(${o.id})">💰收费</button></div></div>`; }
             document.getElementById('orderListContainer').innerHTML = oHtml||'<div>暂无开单</div>';
-            // 项目表格
             let projects = await getAll('projects'); let pjHtml=''; for(let pro of projects) pjHtml+=`<tr><td>${escapeHtml(pro.name)}</td><td>${pro.price}</td><td><button class="btn-sm btn-outline" onclick="editProject(${pro.id})">编辑</button> <button class="btn-sm btn-danger-outline" onclick="delProjectWithPwd(${pro.id})">删除</button></td></tr>`;
             document.getElementById('projectTableBody').innerHTML = pjHtml||'<tr><td colspan="3">暂无项目</td></tr>';
-            // 今日预约
             const todayAppts = appts.filter(a=>a.datetime?.split('T')[0]===today && a.status!==5); let tHtml=''; for(let a of todayAppts){ const p=patients.find(p=>p.id===a.patientId); const debt=await getPatientDebt(a.patientId); tHtml+=`<div class="appt-row ${debt>0?'debt-highlight':''}"><div><strong>${a.datetime.substring(11,16)}</strong> ${p?.name} · ${a.item||''} ${debt>0?`<span class="debt-tag">欠${debt.toFixed(2)}</span>`:''}</div></div>`; } document.getElementById('todayApptList').innerHTML = tHtml||'✨ 今日无预约';
-            // 今日待回访提醒
             const pendingToday = returns.filter(r=>r.status===0 && r.planDate <= today); let retHtml=''; for(let r of pendingToday.slice(0,5)){ const p=patients.find(p=>p.id===r.patientId); retHtml+=`<div class="flex-between"><span>📞 ${p?.name||r.patientName} - ${r.type||'回访'}</span><button class="btn-sm" onclick="completeReturn(${r.id})">完成</button></div>`; } document.getElementById('todayReturnList').innerHTML = retHtml||'今日无待回访任务';
-            // 月度统计
             const monthMap={}; for(let p of payments){ const m=p.date.slice(0,7); monthMap[m]=(monthMap[m]||0)+p.amount; } let sHtml=''; for(let [m,t] of Object.entries(monthMap)) sHtml+=`<tr><td>${m}</td><td>${t.toFixed(2)}</td></tr>`; document.getElementById('statsTableBody').innerHTML = sHtml||'<tr><td colspan="2">暂无数据</td></tr>';
-            // 角标
             document.querySelectorAll('.badge').forEach(b=>b.remove()); const pendingAppts = appts.filter(a=>a.status!==3 && a.status!==4 && a.status!==5).length; const pendingReturns = returns.filter(r=>r.status===0).length;
             if(pendingAppts>0){ const b=document.createElement('span'); b.className='badge'; b.innerText=pendingAppts>99?'99+':pendingAppts; document.querySelector('.tab[data-tab="appointments"]').appendChild(b); }
             if(pendingReturns>0){ const b=document.createElement('span'); b.className='badge'; b.innerText=pendingReturns>99?'99+':pendingReturns; document.querySelector('.tab[data-tab="returns"]').appendChild(b); }
         }
 
-        // 全局函数
+        // 其余全局函数保持完全不变
         window.escapeHtml = function(str){ if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); };
         window.callPatient = function(phone){ if(phone) window.location.href="tel:"+phone; };
-        window.copyActivationText = function(name,phone){ const text=`【激活邀约】${name}您好，我是${consultantName}，好久不见！我们最近有免费口腔检查+洗牙优惠活动，特别适合老客户。您方便时回复我，帮您预约个时间？${phone}`; navigator.clipboard.writeText(text); alert('话术已复制'); };
-        window.completeReturn = async function(id){ 
-            const txt=prompt('请输入回访结果:'); 
-            if(!txt || txt.trim()===''){ alert('内容不能为空'); return; } 
-            const returns=await getAll('returnVisits'); 
-            const r=returns.find(r=>r.id===id); 
-            if(r){ 
-                r.status=1; 
-                r.customResult=txt.trim(); 
-                r.completedAt = getCurrentBeijingISO();
-                await putData('returnVisits',r); 
-                await updatePatientLastActive(r.patientId); 
-                renderAll(); 
-            } 
-        };
+        window.completeReturn = async function(id){ const txt=prompt('请输入回访结果:'); if(!txt || txt.trim()===''){ alert('内容不能为空'); return; } const returns=await getAll('returnVisits'); const r=returns.find(r=>r.id===id); if(r){ r.status=1; r.customResult=txt.trim(); r.completedAt = getCurrentBeijingISO(); await putData('returnVisits',r); await updatePatientLastActive(r.patientId); renderAll(); } };
         window.updateApptStatus = async function(id,status){ const appts=await getAll('appointments'); const a=appts.find(a=>a.id===id); if(a){ a.status=parseInt(status); await putData('appointments',a); if(a.status===4) await updatePatientLastActive(a.patientId); renderAll(); } };
-        window.editApptById = async function(id){
-            const appts = await getAll('appointments');
-            const a = appts.find(a=>a.id===id);
-            if(a){
-                document.getElementById('apptModalTitle').innerText = '编辑预约';
-                document.getElementById('editApptId').value = a.id;
-                document.getElementById('apptPatientId').value = a.patientId;
-                const patient = (await getAll('patients')).find(p=>p.id===a.patientId);
-                if(patient) document.getElementById('apptPatientSearch').value = `${patient.name} (${patient.mobile})`;
-                document.getElementById('apptDateTime').value = a.datetime;
-                document.getElementById('apptDoctor').value = a.doctorName || '';
-                await refreshApptSelects();
-                const projSelect = document.getElementById('apptProjectId');
-                if(a.item){
-                    const projects = await getAll('projects');
-                    const matched = projects.find(p=>p.name === a.item);
-                    if(matched) projSelect.value = matched.id;
-                    else projSelect.value = '';
-                }
-                document.getElementById('apptModal').style.display = 'flex';
-            }
-        };
+        window.editApptById = async function(id){ const appts = await getAll('appointments'); const a = appts.find(a=>a.id===id); if(a){ document.getElementById('apptModalTitle').innerText = '编辑预约'; document.getElementById('editApptId').value = a.id; document.getElementById('apptPatientId').value = a.patientId; const patient = (await getAll('patients')).find(p=>p.id===a.patientId); if(patient) document.getElementById('apptPatientSearch').value = `${patient.name} (${patient.mobile})`; document.getElementById('apptDateTime').value = a.datetime; document.getElementById('apptDoctor').value = a.doctorName || ''; await refreshApptSelects(); const projSelect = document.getElementById('apptProjectId'); if(a.item){ const projects = await getAll('projects'); const matched = projects.find(p=>p.name === a.item); if(matched) projSelect.value = matched.id; else projSelect.value = ''; } document.getElementById('apptModal').style.display = 'flex'; } };
         window.delAppt = async(id)=>{ if(confirm('删除预约')){ await deleteData('appointments',id); renderAll(); } };
         window.showPaymentModal = async(orderId)=>{ window.curOrderId=orderId; const order=(await getAll('orders')).find(o=>o.id===orderId); const patient=(await getAll('patients')).find(p=>p.id===order.patientId); const paid=(await getAll('payments')).filter(p=>p.orderId===orderId).reduce((s,p)=>s+p.amount,0); document.getElementById('paymentPatientName').innerText=patient?.name; document.getElementById('paymentTotalAmount').innerText=order.totalAmount.toFixed(2); document.getElementById('paymentPaidAmount').innerText=paid.toFixed(2); document.getElementById('paymentAmount').value=''; document.getElementById('paymentModal').style.display='flex'; };
         document.getElementById('submitPaymentBtn').onclick=async()=>{ const amt=parseFloat(document.getElementById('paymentAmount').value); if(amt>0){ const order=(await getAll('orders')).find(o=>o.id===window.curOrderId); const paid=(await getAll('payments')).filter(p=>p.orderId===window.curOrderId).reduce((s,p)=>s+p.amount,0); if(paid+amt<=order.totalAmount){ await putData('payments',{orderId:window.curOrderId,amount:amt,date:getLocalToday()}); await updateOrderDebt(order); await updatePatientLastActive(order.patientId); renderAll(); document.getElementById('paymentModal').style.display='none'; } else alert('超出应收'); } };
@@ -481,148 +483,13 @@
         function hideApptSuggestions(){ const div=document.getElementById('apptPatientSuggestions'); if(div) div.style.display='none'; }
         function hideOrderSuggestions(){ const div=document.getElementById('orderPatientSuggestions'); if(div) div.style.display='none'; }
         function setupPatientSearch(inputId,suggestionsId,hiddenId){ const input=document.getElementById(inputId); const sugDiv=document.getElementById(suggestionsId); const hidden=document.getElementById(hiddenId); if(!input) return; input.addEventListener('input',async function(e){ const kw=e.target.value.trim().toLowerCase(); if(!kw){ sugDiv.style.display='none'; return; } const patients=await getAll('patients'); const filtered=patients.filter(p=>p.name.toLowerCase().includes(kw)||p.mobile.includes(kw)); if(!filtered.length){ sugDiv.style.display='none'; return; } sugDiv.innerHTML=filtered.map(p=>`<div class="suggestion-item" data-id="${p.id}" data-name="${escapeHtml(p.name)}" data-mobile="${p.mobile}">${escapeHtml(p.name)} (${p.mobile})</div>`).join(''); sugDiv.style.display='block'; sugDiv.querySelectorAll('.suggestion-item').forEach(el=>{ el.addEventListener('click',()=>{ const id=parseInt(el.dataset.id); const name=el.dataset.name; const mobile=el.dataset.mobile; input.value=`${name} (${mobile})`; hidden.value=id; sugDiv.style.display='none'; }); }); }); document.addEventListener('click',function(e){ if(!sugDiv.contains(e.target) && e.target!==input) sugDiv.style.display='none'; }); }
-
-        // 项目删除需密码
         window.delProjectWithPwd = async(id)=>{ const pwd = prompt('请输入项目删除密码:'); if(pwd !== '123987'){ alert('密码错误'); return; } if(confirm('删除项目')){ await deleteData('projects',id); renderAll(); } };
-        // 患者删除需密码
         window.delPatient = async(id)=>{ const pwd = prompt('请输入删除密码:'); if(pwd !== '12349876'){ alert('密码错误'); return; } if(confirm('删除患者所有关联数据')){ const appts=await getAll('appointments'); for(let a of appts.filter(a=>a.patientId===id)) await deleteData('appointments',a.id); const rvs=await getAll('returnVisits'); for(let r of rvs.filter(r=>r.patientId===id)) await deleteData('returnVisits',r.id); const orders=await getAll('orders'); for(let o of orders.filter(o=>o.patientId===id)){ let payments=await getAll('payments'); for(let p of payments.filter(p=>p.orderId===o.id)) await deleteData('payments',p.id); await deleteData('orders',o.id); } await deleteData('patients',id); renderAll(); alert('已删除'); } };
-
-        // 语音建档修复（使用浏览器原生语音识别，无需录音）
-        const voiceBtn = document.getElementById('voiceBtn');
-        let recognition = null;
-        function initRecognition() {
-            if ('webkitSpeechRecognition' in window) {
-                recognition = new webkitSpeechRecognition();
-                recognition.lang = 'zh-CN';
-                recognition.interimResults = false;
-                recognition.maxAlternatives = 1;
-                return true;
-            } else {
-                alert('当前浏览器不支持语音识别，请使用Chrome或Edge');
-                return false;
-            }
-        }
-        voiceBtn.addEventListener('mousedown', (e) => {
-            e.preventDefault();
-            if (!initRecognition()) return;
-            recognition.start();
-            voiceBtn.style.background = '#ef4444';
-            voiceBtn.innerText = '🎙️ 识别中... 松开';
-        });
-        voiceBtn.addEventListener('mouseup', () => {
-            if (recognition) {
-                recognition.stop();
-                voiceBtn.style.background = '#8b5cf6';
-                voiceBtn.innerText = '🎤 按住 说话建档';
-            }
-        });
-        voiceBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            if (!initRecognition()) return;
-            recognition.start();
-            voiceBtn.style.background = '#ef4444';
-            voiceBtn.innerText = '🎙️ 识别中... 松开';
-        });
-        voiceBtn.addEventListener('touchend', () => {
-            if (recognition) {
-                recognition.stop();
-                voiceBtn.style.background = '#8b5cf6';
-                voiceBtn.innerText = '🎤 按住 说话建档';
-            }
-        });
-        if (recognition) {
-            recognition.onresult = (event) => {
-                const text = event.results[0][0].transcript;
-                const parts = text.split(/(男|女)/);
-                let name='', gender=1, age='', mobile='', complaint='';
-                if(parts.length>=2){ name = parts[0].trim(); gender = parts[1]=='男'?1:2; const after = parts[2]||''; const ageMatch = after.match(/(\d{1,3})岁/); if(ageMatch) age = ageMatch[1]; const mobileMatch = after.match(/1[3-9]\d{9}/); if(mobileMatch) mobile = mobileMatch[0]; complaint = after.replace(/(\d{1,3}岁|1[3-9]\d{9})/g,'').trim(); }
-                else { name = text; }
-                if(name && mobile) {
-                    document.getElementById('patientName').value = name;
-                    document.getElementById('patientGender').value = gender;
-                    document.getElementById('patientAge').value = age;
-                    document.getElementById('patientMobile').value = mobile;
-                    document.getElementById('patientComplaint').value = complaint;
-                    document.getElementById('patientModal').style.display = 'flex';
-                    document.getElementById('patientModalTitle').innerText = '新建患者';
-                    document.getElementById('editPatientId').value = '';
-                } else { alert('语音识别信息不全，请手动填写'); }
-            };
-            recognition.onerror = () => { alert('识别失败，请重试'); };
-        }
-
-        // 初始化
-        window.addEventListener('DOMContentLoaded', async()=>{
-            await openDB(); await loadConfig();
-            let pros = await getAll('projects'); if(pros.length===0){ await putData('projects',{name:'种植',price:8000}); await putData('projects',{name:'正畸',price:15000}); await putData('projects',{name:'洁牙',price:200}); await putData('projects',{name:'补牙',price:500}); }
-            let patients = await getAll('patients');
-            for(let p of patients){ if(!p.lastActiveDate){ p.lastActiveDate = p.createdAt || getLocalToday(); await putData('patients',p); } }
-            await renderAll();
-            // 事件绑定
-            document.querySelectorAll('.tab').forEach(tab=>tab.addEventListener('click',()=>{ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); tab.classList.add('active'); document.querySelectorAll('.panel').forEach(p=>p.style.display='none'); document.getElementById(tab.dataset.tab+'Panel').style.display='block'; }));
-            document.querySelectorAll('#returnFilters .filter-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ document.querySelectorAll('#returnFilters .filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); window.returnFilter=btn.dataset.filter; renderAll(); }); });
-            document.getElementById('patientSearchInput').addEventListener('input',()=>renderPatientList());
-            document.getElementById('filterDebtBtn').onclick = ()=>{ window.currentPatientFilter='debt'; renderPatientList(); };
-            document.getElementById('filterLostBtn').onclick = ()=>{ window.currentPatientFilter='lost'; renderPatientList(); };
-            document.getElementById('clearFiltersBtn').onclick = ()=>{ window.currentPatientFilter='all'; renderPatientList(); };
-            document.getElementById('quickPatient').onclick = ()=>{ document.getElementById('patientModal').style.display='flex'; resetPatientForm(); };
-            document.getElementById('addPatientBtn').onclick = ()=>{ document.getElementById('patientModal').style.display='flex'; resetPatientForm(); };
-            document.getElementById('cancelPatientModal').onclick = ()=>document.getElementById('patientModal').style.display='none';
-            document.getElementById('submitPatientBtn').onclick = async()=>{ const id = document.getElementById('editPatientId').value; const name = document.getElementById('patientName').value.trim(); const gender = parseInt(document.getElementById('patientGender').value); const age = parseInt(document.getElementById('patientAge').value); const mobile = document.getElementById('patientMobile').value.trim(); const community = document.getElementById('patientCommunity').value.trim(); const complaint = document.getElementById('patientComplaint').value.trim(); const intentProject = document.getElementById('patientIntentProject').value; const intentLevel = document.getElementById('patientIntentLevel').value; if(!name||!mobile||isNaN(age)){ alert('请完整填写姓名/年龄/手机号'); return; } if(!/^1[3-9]\d{9}$/.test(mobile)){ alert('手机号格式错误'); return; } if(!id && await isDuplicatePatient(name, mobile)){ alert('该患者（姓名或手机号）已存在，请勿重复添加'); return; } if(id && await isDuplicatePatient(name, mobile, parseInt(id))){ alert('该患者（姓名或手机号）已存在'); return; } const patientData = { name, gender, age, mobile, community, complaint, intentProject, intentLevel, lastActiveDate: getLocalToday() }; if(id){ patientData.id = parseInt(id); const old = (await getAll('patients')).find(p=>p.id==id); patientData.createdAt = old.createdAt; await putData('patients', patientData); } else { patientData.createdAt = getBeijingDateTimeStr(); const newId = await putData('patients', patientData); await createInitialReturnVisit(newId, name); } document.getElementById('patientModal').style.display='none'; resetPatientForm(); renderAll(); };
-            function resetPatientForm(){ document.getElementById('patientModalTitle').innerText='新建患者'; document.getElementById('editPatientId').value=''; document.getElementById('patientName').value=''; document.getElementById('patientGender').value='1'; document.getElementById('patientAge').value=''; document.getElementById('patientMobile').value=''; document.getElementById('patientCommunity').value=''; document.getElementById('patientComplaint').value=''; document.getElementById('patientIntentProject').value=''; document.getElementById('patientIntentLevel').value='高'; }
-            setupPatientSearch('apptPatientSearch','apptPatientSuggestions','apptPatientId'); setupPatientSearch('orderPatientSearch','orderPatientSuggestions','orderPatientId');
-            document.getElementById('quickAppt').onclick = async()=>{ await refreshApptSelects(); document.getElementById('apptModalTitle').innerText = '新建预约'; document.getElementById('editApptId').value = ''; document.getElementById('apptModal').style.display='flex'; };
-            document.getElementById('addApptBtn').onclick = async()=>{ await refreshApptSelects(); document.getElementById('apptModalTitle').innerText = '新建预约'; document.getElementById('editApptId').value = ''; document.getElementById('apptModal').style.display='flex'; };
-            document.getElementById('quickOrder').onclick = async()=>{ await refreshOrderSelects(); document.getElementById('orderModal').style.display='flex'; };
-            document.getElementById('addOrderBtn').onclick = async()=>{ await refreshOrderSelects(); document.getElementById('orderModal').style.display='flex'; };
-            document.getElementById('cancelApptModal').onclick = ()=>document.getElementById('apptModal').style.display='none';
-            document.getElementById('cancelOrderModal').onclick = ()=>document.getElementById('orderModal').style.display='none';
-            document.getElementById('cancelPaymentModal').onclick = ()=>document.getElementById('paymentModal').style.display='none';
-            document.getElementById('submitApptBtn').onclick = async()=>{ 
-                const pid=parseInt(document.getElementById('apptPatientId').value); 
-                if(!pid){ alert('请选择患者'); return; } 
-                const dt=document.getElementById('apptDateTime').value; 
-                if(!dt){ alert('请选择时间'); return; } 
-                const editId = document.getElementById('editApptId').value;
-                if(await checkAppointmentConflict(pid, dt, editId ? parseInt(editId) : null)){
-                    alert('该患者在此时间段已有预约，请选择其他时间');
-                    return;
-                }
-                const projId=document.getElementById('apptProjectId').value; 
-                let item=''; 
-                if(projId){ const pros=await getAll('projects'); const pro=pros.find(p=>p.id==projId); if(pro) item=pro.name; } 
-                const doc=document.getElementById('apptDoctor').value; 
-                if(editId){
-                    const existing = (await getAll('appointments')).find(a=>a.id==editId);
-                    if(existing){
-                        existing.patientId = pid;
-                        existing.datetime = dt;
-                        existing.item = item;
-                        existing.doctorName = doc;
-                        await putData('appointments', existing);
-                    }
-                } else {
-                    await putData('appointments',{patientId:pid,datetime:dt,item,doctorName:doc,status:0});
-                }
-                await updatePatientLastActive(pid); 
-                document.getElementById('apptModal').style.display='none'; 
-                renderAll(); 
-            };
-            document.getElementById('submitOrderBtn').onclick = async()=>{ const pid=parseInt(document.getElementById('orderPatientId').value); if(!pid){ alert('请选择患者'); return; } const projId=document.getElementById('orderProjectId').value; if(!projId){ alert('请选择项目'); return; } const paidNow=parseFloat(document.getElementById('orderPaid').value)||0; const pros=await getAll('projects'); const pro=pros.find(p=>p.id==projId); if(!pro) return; const total=pro.price; if(paidNow>total){ alert(`实收不能大于应收 ${total} 元`); return; } const now= getBeijingDateTimeStr(); const order={patientId:pid, datetime:now, date:now.split(' ')[0], totalAmount:total, item:pro.name, discountReason:document.getElementById('orderDiscount').value, paidAmount:paidNow, debt:total-paidNow, status:paidNow>=total?'已结清':(paidNow>0?'部分欠费':'未收费')}; const orderId=await putData('orders',order); if(paidNow>0) await putData('payments',{orderId,amount:paidNow,date:getLocalToday()}); const patient=(await getAll('patients')).find(p=>p.id===pid); if(patient) await createOrderReturnVisit(patient.id, patient.name); await updatePatientLastActive(pid); document.getElementById('orderModal').style.display='none'; renderAll(); };
-            document.getElementById('setGoalBtn').onclick = async()=>{ const val=parseFloat(prompt('月度目标', monthlyTarget)); if(!isNaN(val)){ monthlyTarget=val; await setConfig('monthlyTarget',val); renderAll(); } };
-            document.getElementById('consultantName').onclick = ()=>{ const newName=prompt('工作室名称', consultantName); if(newName && newName.trim()){ consultantName=newName.trim(); setConfig('consultantName',consultantName); document.getElementById('consultantName').innerHTML = consultantName + ' ✎'; } };
-            window.editPatientById = async function(id){ const patients=await getAll('patients'); const p=patients.find(p=>p.id===id); if(p){ document.getElementById('patientModalTitle').innerText='编辑患者'; document.getElementById('patientName').value=p.name; document.getElementById('patientGender').value=p.gender; document.getElementById('patientAge').value=p.age; document.getElementById('patientMobile').value=p.mobile; document.getElementById('patientCommunity').value=p.community||''; document.getElementById('patientComplaint').value=p.complaint||''; document.getElementById('patientIntentProject').value=p.intentProject||''; document.getElementById('patientIntentLevel').value=p.intentLevel||'高'; document.getElementById('editPatientId').value=p.id; document.getElementById('patientModal').style.display='flex'; } };
-            window.editProject = async(id)=>{ const projects=await getAll('projects'); const proj=projects.find(p=>p.id===id); if(proj){ const newName=prompt('新名称',proj.name); if(newName) proj.name=newName; const newPrice=parseFloat(prompt('新价格',proj.price)); if(!isNaN(newPrice)) proj.price=newPrice; await putData('projects',proj); renderAll(); } };
-            document.getElementById('importPatientsBtn').onclick = importPatients;
-            document.getElementById('exportPatientsBtn').onclick = exportPatients;
-            document.getElementById('importProjectsBtn').onclick = importProjects;
-            document.getElementById('exportProjectsBtn').onclick = exportProjects;
-            document.getElementById('addProjectBtn').onclick = async()=>{ const name=prompt('项目名'); if(name){ const price=parseFloat(prompt('价格')); if(!isNaN(price)){ await putData('projects',{name,price}); renderAll(); } } };
-            document.getElementById('exportStatsBtn').onclick = async()=>{ const orders=await getAll('orders'); let csv="订单ID,日期,患者,项目,应收,已收,欠费\n"; for(let o of orders){ const paid=(await getAll('payments')).filter(p=>p.orderId===o.id).reduce((s,p)=>s+p.amount,0); const patient=(await getAll('patients')).find(p=>p.id===o.patientId); csv+=`${o.id},${o.datetime||o.date},${patient?.name||''},${o.item},${o.totalAmount},${paid},${o.totalAmount-paid}\n`; } const blob=new Blob(["\uFEFF"+csv],{type:"text/csv"}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download=`业绩_${getLocalToday()}.csv`; link.click(); };
-            const allProjects = await getAll('projects'); const intentSelect = document.getElementById('patientIntentProject'); if(intentSelect) intentSelect.innerHTML = '<option value="">无</option>' + allProjects.map(p=>`<option value="${escapeHtml(p.name)}">${escapeHtml(p.name)}</option>`).join('');
-            window.returnFilter = 'pending'; window.currentPatientFilter = 'all';
-        });
-    })();
+        async function renderPatientList(){ let patients = await getAll('patients'); let keyword = document.getElementById('patientSearchInput').value.trim().toLowerCase(); let filtered = patients; if(keyword) filtered = filtered.filter(p => p.name.toLowerCase().includes(keyword) || p.mobile.includes(keyword)); const filterType = window.currentPatientFilter || 'all'; if(filterType === 'debt') { let debtMap = new Map(); for(let p of filtered) { let d=await getPatientDebt(p.id); if(d>0) debtMap.set(p.id,d); } filtered = filtered.filter(p=>debtMap.has(p.id)); } else if(filterType === 'lost') { let lostMap = new Map(); for(let p of filtered) if(await isLostPatient(p)) lostMap.set(p.id,true); filtered = filtered.filter(p=>lostMap.has(p.id)); } else if(filterType === 'new') { let newFiltered = []; for(let p of filtered) { const debt = await getPatientDebt(p.id); const lost = await isLostPatient(p); const days = p.createdAt ? daysBetween(p.createdAt) : 999; if(days <= 7 && debt === 0 && !lost && p.intentLevel !== '高' && p.intentLevel !== '中') newFiltered.push(p); } filtered = newFiltered; } else if(filterType === 'highIntent') { filtered = filtered.filter(p => p.intentLevel === '高'); } else if(filterType === 'midIntent') { filtered = filtered.filter(p => p.intentLevel === '中'); } let html=''; for(let p of filtered) { const debt = await getPatientDebt(p.id); const lost = await isLostPatient(p); const initial = p.name.charAt(0); html += `<div class="patient-card ${debt>0?'debt-highlight':''}"><div class="flex-between"><div class="patient-name"><div class="patient-avatar">${initial}</div><div>${escapeHtml(p.name)} <span style="font-size:13px; font-weight:normal;">${p.gender==1?'男':'女'} · ${p.age}岁</span>${lost?`<span class="lost-badge">流失15天+</span>`:''}</div></div><div><span class="call-icon" onclick="callPatient('${p.mobile}')">📞 拨打</span></div></div><div class="patient-meta">📞 ${p.mobile} &nbsp;|&nbsp; 🏘️ ${escapeHtml(p.community||'')}</div><div class="patient-meta">📋 ${escapeHtml(p.complaint?.substring(0,40)||'')}</div><div class="patient-meta">🏷️ 阶段: ${p.intentLevel ? (p.intentProject?`意向:${p.intentProject}(${p.intentLevel})`:'意向跟进中') : (debt>0?'欠费跟进':(lost?'流失待激活':'常规维护'))}</div><div class="time-stamp">最后互动: ${p.lastActiveDate||'从未'} | 建档: ${p.createdAt||''}</div>${debt>0?`<div class="debt-tag">⚠️ 欠费 ${debt.toFixed(2)} 元</div>`:''}<div class="patient-actions"><button class="btn-sm btn-outline" onclick="quickApptWithPatient(${p.id})">📅 预约</button><button class="btn-sm btn-outline" onclick="quickOrderWithPatient(${p.id})">💰 开单</button><button class="btn-sm btn-outline" onclick="editPatientById(${p.id})">编辑</button><button class="btn-sm btn-danger-outline" onclick="delPatient(${p.id})">删除</button></div></div>`; } document.getElementById('patientListContainer').innerHTML = html || '<div style="text-align:center;padding:40px;">暂无患者</div>'; }
+        async function renderStageBoard() { const patients = await getAll('patients'); let high=0, mid=0, debt=0, lost=0; for(let p of patients) { const d = await getPatientDebt(p.id); const l = await isLostPatient(p); if(l) lost++; else if(d>0) debt++; else if(p.intentLevel === '高') high++; else if(p.intentLevel === '中') mid++; } const board = `<div class="stat-card" data-stage="highIntent"><div class="stat-number">${high}</div><div>高意向</div></div><div class="stat-card" data-stage="midIntent"><div class="stat-number">${mid}</div><div>中意向</div></div><div class="stat-card" data-stage="debt"><div class="stat-number">${debt}</div><div>欠费跟进</div></div><div class="stat-card" data-stage="lost"><div class="stat-number">${lost}</div><div>流失待激活</div></div>`; document.getElementById('stageBoard').innerHTML = board; document.querySelectorAll('#stageBoard .stat-card').forEach(card => { card.addEventListener('click', () => { const stage = card.dataset.stage; document.querySelector('.tab[data-tab="patients"]').click(); window.currentPatientFilter = stage; renderPatientList(); }); }); }
+        window.editPatientById = async function(id){ const patients=await getAll('patients'); const p=patients.find(p=>p.id===id); if(p){ document.getElementById('patientModalTitle').innerText='编辑患者'; document.getElementById('patientName').value=p.name; document.getElementById('patientGender').value=p.gender; document.getElementById('patientAge').value=p.age; document.getElementById('patientMobile').value=p.mobile; document.getElementById('patientCommunity').value=p.community||''; document.getElementById('patientComplaint').value=p.complaint||''; document.getElementById('patientIntentProject').value=p.intentProject||''; document.getElementById('patientIntentLevel').value=p.intentLevel||'高'; document.getElementById('editPatientId').value=p.id; document.getElementById('patientModal').style.display='flex'; } };
+        window.editProject = async(id)=>{ const projects=await getAll('projects'); const proj=projects.find(p=>p.id===id); if(proj){ const newName=prompt('新名称',proj.name); if(newName) proj.name=newName; const newPrice=parseFloat(prompt('新价格',proj.price)); if(!isNaN(newPrice)) proj.price=newPrice; await putData('projects',proj); renderAll(); } };
+        window.addEventListener('DOMContentLoaded', async()=>{ await openDB(); await loadConfig(); let pros = await getAll('projects'); if(pros.length===0){ await putData('projects',{name:'种植',price:8000}); await putData('projects',{name:'正畸',price:15000}); await putData('projects',{name:'洁牙',price:200}); await putData('projects',{name:'补牙',price:500}); } let patients = await getAll('patients'); for(let p of patients){ if(!p.lastActiveDate){ p.lastActiveDate = p.createdAt || getLocalToday(); await putData('patients',p); } } await renderAll(); document.querySelectorAll('.tab').forEach(tab=>tab.addEventListener('click',()=>{ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); tab.classList.add('active'); document.querySelectorAll('.panel').forEach(p=>p.style.display='none'); document.getElementById(tab.dataset.tab+'Panel').style.display='block'; })); document.querySelectorAll('#returnFilters .filter-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ document.querySelectorAll('#returnFilters .filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); window.returnFilter=btn.dataset.filter; renderAll(); }); }); document.getElementById('patientSearchInput').addEventListener('input',()=>renderPatientList()); document.getElementById('filterDebtBtn').onclick = ()=>{ window.currentPatientFilter='debt'; renderPatientList(); }; document.getElementById('filterLostBtn').onclick = ()=>{ window.currentPatientFilter='lost'; renderPatientList(); }; document.getElementById('clearFiltersBtn').onclick = ()=>{ window.currentPatientFilter='all'; renderPatientList(); }; document.getElementById('quickPatient').onclick = ()=>{ document.getElementById('patientModal').style.display='flex'; resetPatientForm(); }; document.getElementById('addPatientBtn').onclick = ()=>{ document.getElementById('patientModal').style.display='flex'; resetPatientForm(); }; document.getElementById('cancelPatientModal').onclick = ()=>document.getElementById('patientModal').style.display='none'; document.getElementById('submitPatientBtn').onclick = async()=>{ const id = document.getElementById('editPatientId').value; const name = document.getElementById('patientName').value.trim(); const gender = parseInt(document.getElementById('patientGender').value); const age = parseInt(document.getElementById('patientAge').value); const mobile = document.getElementById('patientMobile').value.trim(); const community = document.getElementById('patientCommunity').value.trim(); const complaint = document.getElementById('patientComplaint').value.trim(); const intentProject = document.getElementById('patientIntentProject').value; const intentLevel = document.getElementById('patientIntentLevel').value; if(!name||!mobile||isNaN(age)){ alert('请完整填写姓名/年龄/手机号'); return; } if(!/^1[3-9]\d{9}$/.test(mobile)){ alert('手机号格式错误'); return; } if(!id && await isDuplicatePatient(name, mobile)){ alert('该患者（姓名或手机号）已存在，请勿重复添加'); return; } if(id && await isDuplicatePatient(name, mobile, parseInt(id))){ alert('该患者（姓名或手机号）已存在'); return; } const patientData = { name, gender, age, mobile, community, complaint, intentProject, intentLevel, lastActiveDate: getLocalToday() }; if(id){ patientData.id = parseInt(id); const old = (await getAll('patients')).find(p=>p.id==id); patientData.createdAt = old.createdAt; await putData('patients', patientData); } else { patientData.createdAt = getBeijingDateTimeStr(); const newId = await putData('patients', patientData); await createInitialReturnVisit(newId, name); } document.getElementById('patientModal').style.display='none'; resetPatientForm(); renderAll(); }; function resetPatientForm(){ document.getElementById('patientModalTitle').innerText='新建患者'; document.getElementById('editPatientId').value=''; document.getElementById('patientName').value=''; document.getElementById('patientGender').value='1'; document.getElementById('patientAge').value=''; document.getElementById('patientMobile').value=''; document.getElementById('patientCommunity').value=''; document.getElementById('patientComplaint').value=''; document.getElementById('patientIntentProject').value=''; document.getElementById('patientIntentLevel').value='高'; } setupPatientSearch('apptPatientSearch','apptPatientSuggestions','apptPatientId'); setupPatientSearch('orderPatientSearch','orderPatientSuggestions','orderPatientId'); document.getElementById('quickAppt').onclick = async()=>{ await refreshApptSelects(); document.getElementById('apptModalTitle').innerText = '新建预约'; document.getElementById('editApptId').value = ''; document.getElementById('apptModal').style.display='flex'; }; document.getElementById('addApptBtn').onclick = async()=>{ await refreshApptSelects(); document.getElementById('apptModalTitle').innerText = '新建预约'; document.getElementById('editApptId').value = ''; document.getElementById('apptModal').style.display='flex'; }; document.getElementById('quickOrder').onclick = async()=>{ await refreshOrderSelects(); document.getElementById('orderModal').style.display='flex'; }; document.getElementById('addOrderBtn').onclick = async()=>{ await refreshOrderSelects(); document.getElementById('orderModal').style.display='flex'; }; document.getElementById('cancelApptModal').onclick = ()=>document.getElementById('apptModal').style.display='none'; document.getElementById('cancelOrderModal').onclick = ()=>document.getElementById('orderModal').style.display='none'; document.getElementById('cancelPaymentModal').onclick = ()=>document.getElementById('paymentModal').style.display='none'; document.getElementById('submitApptBtn').onclick = async()=>{ const pid=parseInt(document.getElementById('apptPatientId').value); if(!pid){ alert('请选择患者'); return; } const dt=document.getElementById('apptDateTime').value; if(!dt){ alert('请选择时间'); return; } const editId = document.getElementById('editApptId').value; if(await checkAppointmentConflict(pid, dt, editId ? parseInt(editId) : null)){ alert('该患者在此时间段已有预约，请选择其他时间'); return; } const projId=document.getElementById('apptProjectId').value; let item=''; if(projId){ const pros=await getAll('projects'); const pro=pros.find(p=>p.id==projId); if(pro) item=pro.name; } const doc=document.getElementById('apptDoctor').value; if(editId){ const existing = (await getAll('appointments')).find(a=>a.id==editId); if(existing){ existing.patientId = pid; existing.datetime = dt; existing.item = item; existing.doctorName = doc; await putData('appointments', existing); } } else { await putData('appointments',{patientId:pid,datetime:dt,item,doctorName:doc,status:0}); } await updatePatientLastActive(pid); document.getElementById('apptModal').style.display='none'; renderAll(); }; document.getElementById('submitOrderBtn').onclick = async()=>{ const pid=parseInt(document.getElementById('orderPatientId').value); if(!pid){ alert('请选择患者'); return; } const projId=document.getElementById('orderProjectId').value; if(!projId){ alert('请选择项目'); return; } const paidNow=parseFloat(document.getElementById('orderPaid').value)||0; const pros=await getAll('projects'); const pro=pros.find(p=>p.id==projId); if(!pro) return; const total=pro.price; if(paidNow>total){ alert(`实收不能大于应收 ${total} 元`); return; } const now= getBeijingDateTimeStr(); const order={patientId:pid, datetime:now, date:now.split(' ')[0], totalAmount:total, item:pro.name, discountReason:document.getElementById('orderDiscount').value, paidAmount:paidNow, debt:total-paidNow, status:paidNow>=total?'已结清':(paidNow>0?'部分欠费':'未收费')}; const orderId=await putData('orders',order); if(paidNow>0) await putData('payments',{orderId,amount:paidNow,date:getLocalToday()}); const patient=(await getAll('patients')).find(p=>p.id===pid); if(patient) await createOrderReturnVisit(patient.id, patient.name); await updatePatientLastActive(pid); document.getElementById('orderModal').style.display='none'; renderAll(); }; document.getElementById('setGoalBtn').onclick = async()=>{ const val=parseFloat(prompt('月度目标', monthlyTarget)); if(!isNaN(val)){ monthlyTarget=val; await setConfig('monthlyTarget',val); renderAll(); } }; document.getElementById('consultantName').onclick = ()=>{ const newName=prompt('工作室名称', consultantName); if(newName && newName.trim()){ consultantName=newName.trim(); setConfig('consultantName',consultantName); document.getElementById('consultantName').innerHTML = consultantName + ' ✎'; } }; document.getElementById('importPatientsBtn').onclick = importPatients; document.getElementById('exportPatientsBtn').onclick = exportPatients; document.getElementById('importProjectsBtn').onclick = importProjects; document.getElementById('exportProjectsBtn').onclick = exportProjects; document.getElementById('addProjectBtn').onclick = async()=>{ const name=prompt('项目名'); if(name){ const price=parseFloat(prompt('价格')); if(!isNaN(price)){ await putData('projects',{name,price}); renderAll(); } } }; document.getElementById('exportStatsBtn').onclick = async()=>{ const orders=await getAll('orders'); let csv="订单ID,日期,患者,项目,应收,已收,欠费\n"; for(let o of orders){ const paid=(await getAll('payments')).filter(p=>p.orderId===o.id).reduce((s,p)=>s+p.amount,0); const patient=(await getAll('patients')).find(p=>p.id===o.patientId); csv+=`${o.id},${o.datetime||o.date},${patient?.name||''},${o.item},${o.totalAmount},${paid},${o.totalAmount-paid}\n`; } const blob=new Blob(["\uFEFF"+csv],{type:"text/csv"}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download=`业绩_${getLocalToday()}.csv`; link.click(); }; const allProjects = await getAll('projects'); const intentSelect = document.getElementById('patientIntentProject'); if(intentSelect) intentSelect.innerHTML = '<option value="">无</option>' + allProjects.map(p=>`<option value="${escapeHtml(p.name)}">${escapeHtml(p.name)}</option>`).join(''); window.returnFilter = 'pending'; window.currentPatientFilter = 'all'; }); })();
 </script>
 </body>
 </html>
