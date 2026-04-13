@@ -35,20 +35,26 @@
             color: #0c4e5c;
         }
 
-        /* 统计卡片 */
-        .stats-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+        /* 统计卡片 - 强制一行，自适应平分 */
+        .stats-row { 
+            display: flex; 
+            gap: 12px; 
+            flex-wrap: nowrap;   /* 不允许换行 */
+            margin-bottom: 6px; 
+        }
         .stat-card {
             flex: 1;
             background: #f8fafc;
             border-radius: 24px;
-            padding: 14px 6px;
+            padding: 14px 4px;
             text-align: center;
             cursor: pointer;
             transition: 0.2s;
+            min-width: 0;        /* 防止溢出 */
         }
         .stat-card:hover { background: #eef2ff; transform: translateY(-2px); }
-        .stat-number { font-size: 28px; font-weight: 800; color: #0f7b8c; }
-        .stat-label { font-size: 12px; color: #5b6e8c; margin-top: 6px; }
+        .stat-number { font-size: 24px; font-weight: 800; color: #0f7b8c; }
+        .stat-label { font-size: 11px; color: #5b6e8c; margin-top: 6px; }
         .progress-bar { background: #e2e8f0; border-radius: 30px; height: 6px; margin-top: 10px; overflow: hidden; }
         .progress-fill { background: #0f7b8c; width: 0%; height: 100%; border-radius: 30px; }
 
@@ -77,15 +83,19 @@
             white-space: nowrap;
         }
 
-        /* 阶段看板 */
+        /* 阶段看板 - 强制一行，自适应平分 */
         .stage-board {
             display: flex;
             gap: 12px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
         }
         .stage-board .stat-card {
             flex: 1;
-            min-width: 80px;
+            min-width: 0;
+            padding: 10px 4px;
+        }
+        .stage-board .stat-number {
+            font-size: 22px;
         }
 
         /* 按钮 */
@@ -193,55 +203,78 @@
         }
         .result-text { background: #eef2ff; border-radius: 20px; padding: 4px 12px; font-size: 11px; display: inline-block; margin-top: 8px; }
 
-        /* 表格样式：所有表头居中，单元格内容左对齐（保持数据可读） */
+        /* 预约表格 - 不横向滚动，列宽自适应，仅时间允许换行 */
         .appointment-table, .project-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
+            font-size: 11px;          /* 基础字体缩小，保证不换行 */
+            table-layout: auto;
         }
         .appointment-table th, .project-table th {
-            text-align: center;          /* 表头居中 */
-            padding: 12px 6px;
+            text-align: center;
+            padding: 10px 4px;
             background: #f8fafc;
             font-weight: 600;
             color: #2c3e50;
+            white-space: nowrap;
         }
         .appointment-table td, .project-table td {
-            padding: 10px 6px;
+            padding: 8px 4px;
             border-bottom: 1px solid #ecf3f9;
             vertical-align: top;
-            text-align: left;            /* 内容左对齐 */
         }
-        /* 状态卡片独立行样式 */
+        /* 列宽分配：时间(允许换行) 患者 项目 医生 操作 均分 */
+        .appointment-table th:nth-child(1), .appointment-table td:nth-child(1) { width: 16%; }
+        .appointment-table th:nth-child(2), .appointment-table td:nth-child(2) { width: 22%; }
+        .appointment-table th:nth-child(3), .appointment-table td:nth-child(3) { width: 22%; }
+        .appointment-table th:nth-child(4), .appointment-table td:nth-child(4) { width: 20%; }
+        .appointment-table th:nth-child(5), .appointment-table td:nth-child(5) { width: 20%; }
+        /* 时间列允许换行，其他列强制不换行（若实在溢出则缩小字体） */
+        .appointment-table td:nth-child(1) {
+            white-space: normal;
+            word-break: break-word;
+        }
+        .appointment-table td:nth-child(2),
+        .appointment-table td:nth-child(3),
+        .appointment-table td:nth-child(4),
+        .appointment-table td:nth-child(5) {
+            white-space: nowrap;
+        }
+        /* 操作按钮组在小屏下允许换行，保证可用 */
+        .appointment-table td:nth-child(5) .btn-sm {
+            font-size: 10px;
+            padding: 4px 8px;
+            white-space: nowrap;
+        }
+        /* 状态卡片独立行 - 与上一行紧密连接 */
         .status-card-row td {
-            padding: 0 6px 12px 6px !important;
+            padding: 0 4px 8px 4px !important;
             border-bottom: none;
         }
         .status-card {
-            border-radius: 20px;
-            padding: 10px 14px;
+            border-radius: 18px;
+            padding: 8px 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 4px;
-            transition: all 0.2s;
+            gap: 8px;
+            margin-top: 2px;
             font-weight: 500;
         }
         .status-label {
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         .status-select {
             background: white;
             border: 1px solid rgba(0,0,0,0.15);
             border-radius: 30px;
-            padding: 6px 12px;
-            font-size: 12px;
+            padding: 4px 8px;
+            font-size: 11px;
             font-weight: 500;
             cursor: pointer;
         }
@@ -304,6 +337,10 @@
             .btn-group .btn, .btn-group .btn-sm { font-size: 12px; padding: 8px 12px; }
             .filter-group .filter-btn { font-size: 11px; padding: 6px 12px; }
             .status-card { flex-direction: column; align-items: flex-start; }
+            .appointment-table th, .appointment-table td { font-size: 10px; }
+            .appointment-table td:nth-child(5) .btn-sm { font-size: 9px; padding: 3px 6px; }
+            .stat-number { font-size: 20px; }
+            .stage-board .stat-number { font-size: 18px; }
         }
     </style>
 </head>
@@ -352,10 +389,11 @@
             <div id="patientListContainer"></div>
         </div>
     </div>
-    <div id="appointmentsPanel" class="panel" style="display:none"><div class="card"><div class="flex-between"><span class="card-header">📆 预约记录</span><button class="btn btn-sm" id="addApptBtn">+ 新建</button></div><div style="overflow-x:auto;"><table class="appointment-table"><thead><tr><th>时间</th><th>患者</th><th>项目</th><th>医生</th><th>操作</th></tr></thead><tbody id="apptTableBody"></tbody></table></div></div></div>
+    <!-- 预约记录面板：移除 overflow-x 滚动，表格自适应不滚动 -->
+    <div id="appointmentsPanel" class="panel" style="display:none"><div class="card"><div class="flex-between"><span class="card-header">📆 预约记录</span><button class="btn btn-sm" id="addApptBtn">+ 新建</button></div><div style="overflow-x: visible;"><table class="appointment-table"><thead><tr><th>时间</th><th>患者</th><th>项目</th><th>医生</th><th>操作</th></tr></thead><tbody id="apptTableBody"></tbody></table></div></div></div>
     <div id="returnsPanel" class="panel" style="display:none"><div class="card"><div class="card-header">✅ 回访任务</div><div class="return-filters filter-group" id="returnFilters"><button class="filter-btn active" data-filter="pending">待回访</button><button class="filter-btn" data-filter="all">全部</button><button class="filter-btn" data-filter="completed">已完成</button></div><div id="returnListContainer"></div></div></div>
     <div id="ordersPanel" class="panel" style="display:none"><div class="card"><div class="flex-between"><span class="card-header">💰 开单记录</span><button class="btn btn-sm" id="addOrderBtn">+ 开单</button></div><div id="orderListContainer"></div></div></div>
-    <div id="projectsPanel" class="panel" style="display:none"><div class="card"><div class="flex-between"><span class="card-header">📋 项目价格表</span></div><div class="btn-group"><button class="btn-sm btn-outline" id="importProjectsBtn">📂 导入</button><button class="btn-sm btn-outline" id="exportProjectsBtn">📎 导出</button><button class="btn btn-sm" id="addProjectBtn">+ 新增</button></div><div style="overflow-x:auto;"><table class="project-table"><thead><tr><th>项目名称</th><th>价格(元)</th><th>操作</th></tr></thead><tbody id="projectTableBody"></tbody></table></div></div></div>
+    <div id="projectsPanel" class="panel" style="display:none"><div class="card"><div class="flex-between"><span class="card-header">📋 项目价格表</span></div><div class="btn-group"><button class="btn-sm btn-outline" id="importProjectsBtn">📂 导入</button><button class="btn-sm btn-outline" id="exportProjectsBtn">📎 导出</button><button class="btn btn-sm" id="addProjectBtn">+ 新增</button></div><div style="overflow-x:auto;"><table class="project-table"><thead><tr><th>项目名称</th><th>价格(元)</th><th>操作</th></tr></thead><tbody id="projectTableBody"></tbody></tr></div></div></div>
     <div id="statsPanel" class="panel" style="display:none"><div class="card"><div class="card-header">📊 月度业绩明细</div><div style="overflow-x:auto;"><table class="project-table"><thead><tr><th>月份</th><th>总实收(元)</th></tr></thead><tbody id="statsTableBody"></tbody></table></div><button id="exportStatsBtn" class="btn btn-sm" style="margin-top:16px;">📎 导出CSV</button></div></div>
 </div>
 
@@ -403,13 +441,13 @@
             return patients.some(p => (p.name === name || p.mobile === mobile) && (excludeId === null || p.id !== excludeId));
         }
 
-        // 密码验证及导入导出保持原样
+        // 密码验证及导入导出
         async function exportPatients() { const pwd = prompt('请输入导出密码:'); if(pwd !== '12349876') { alert('密码错误'); return; } const patients = await getAll('patients'); const csv = "\uFEFF姓名,性别,年龄,手机号,小区,主诉,建档时间\n"+patients.map(p=>`${p.name},${p.gender==1?'男':'女'},${p.age},${p.mobile},${p.community||''},${p.complaint||''},${p.createdAt||''}`).join("\n"); const blob = new Blob([csv],{type:"text/csv;charset=utf-8"}); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `患者数据_${getLocalToday()}.csv`; link.click(); alert('导出成功'); }
         async function importPatients() { const pwd = prompt('请输入导入密码:'); if(pwd !== '12349876') { alert('密码错误'); return; } const input = document.createElement('input'); input.type = 'file'; input.accept = '.csv'; input.onchange = async (e)=>{ const file = e.target.files[0]; const text = await file.text(); const lines = text.split('\n').slice(1); for(let line of lines){ if(!line.trim()) continue; const parts = line.split(','); if(parts.length<3) continue; const name = parts[0]; const gender = parts[1]=='男'?1:2; const age = parseInt(parts[2]); const mobile = parts[3]; const community = parts[4]; const complaint = parts[5]; if(name && mobile && !isNaN(age)){ const exists = (await getAll('patients')).some(p=>p.mobile===mobile || p.name===name); if(!exists) await putData('patients',{ name, gender, age, mobile, community, complaint, createdAt: getBeijingDateTimeStr(), lastActiveDate: getLocalToday() }); } } alert('导入完成'); renderAll(); }; input.click(); }
         async function exportProjects() { const pwd = prompt('请输入项目导出密码:'); if(pwd !== '123987') { alert('密码错误'); return; } const projects = await getAll('projects'); const csv = "\uFEFF项目名称,价格\n"+projects.map(p=>`${p.name},${p.price}`).join("\n"); const blob = new Blob([csv],{type:"text/csv"}); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `项目价格_${getLocalToday()}.csv`; link.click(); }
         async function importProjects() { const pwd = prompt('请输入项目导入密码:'); if(pwd !== '123987') { alert('密码错误'); return; } const input = document.createElement('input'); input.type='file'; input.accept='.csv'; input.onchange=async(e)=>{ const file=e.target.files[0]; const text=await file.text(); const lines=text.split('\n').slice(1); for(let line of lines){ if(!line.trim()) continue; const [name,price]=line.split(','); if(name && !isNaN(parseFloat(price))){ await putData('projects',{name,price:parseFloat(price)}); } } alert('导入完成'); renderAll(); }; input.click(); }
 
-        // 全局渲染 (预约状态卡片独立行，原状态列已删除，表头居中通过CSS已实现)
+        // 全局渲染函数
         async function renderAll() {
             await openDB();
             const patients = await getAll('patients'); const appts = await getAll('appointments'); const orders = await getAll('orders'); const payments = await getAll('payments'); const returns = await getAll('returnVisits');
@@ -419,15 +457,13 @@
             const percent = monthlyTarget>0?Math.min(100, (monthTotal/monthlyTarget*100)):0; document.getElementById('targetPercent').innerText = Math.floor(percent)+'%'; document.getElementById('targetFill').style.width = percent+'%';
             await renderPatientList(); await renderStageBoard();
             
-            // 预约表格: 状态栏独立卡片形式 + 不同颜色提示 (单独一行)
             const statusMap = ['待确认','已确认','就诊中','已完成','爽约','已离开'];
             const statusBgClass = ['status-bg-0','status-bg-1','status-bg-2','status-bg-3','status-bg-4','status-bg-5'];
             let aHtml = '';
             for(let a of appts.filter(a=>a.status!==5)){
                 const p = patients.find(p=>p.id===a.patientId);
                 const debt = await getPatientDebt(a.patientId);
-                const debtHtml = debt>0 ? `<span class="debt-tag" style="margin-left:6px;">欠${debt.toFixed(2)}</span>` : '';
-                // 主行: 时间, 患者(含欠费), 项目, 医生, 操作 (共5列)
+                const debtHtml = debt>0 ? `<span class="debt-tag" style="margin-left:4px; font-size:9px;">欠${debt.toFixed(2)}</span>` : '';
                 aHtml += `<tr style="${debt>0?'background:#fff8f8':''}">
                     <td>${a.datetime.replace('T',' ')}</td>
                     <td>${p?.name||'?'} ${debtHtml}</td>
@@ -435,38 +471,43 @@
                     <td>${a.doctorName||''}</td>
                     <td><button class="btn-sm btn-outline" onclick="editApptById(${a.id})">编辑</button> <button class="btn-sm btn-danger-outline" onclick="delAppt(${a.id})">删</button></td>
                 </tr>`;
-                // 状态卡片独立行 (合并5列)
                 const statusText = statusMap[a.status] || '待确认';
                 const bgClass = statusBgClass[a.status] || 'status-bg-0';
-                aHtml += `<tr class="status-card-row"><td colspan="5" style="padding: 0 6px 12px 6px;">
+                aHtml += `<tr class="status-card-row"><td colspan="5" style="padding: 0 4px 8px 4px;">
                     <div class="status-card ${bgClass}">
-                        <div class="status-label">📌 当前状态：<strong>${statusText}</strong></div>
+                        <div class="status-label">📌 状态：<strong>${statusText}</strong></div>
                         <select class="status-select" onchange="updateApptStatus(${a.id}, this.value)">
                             ${statusMap.map((s,i)=>`<option value="${i}" ${a.status===i?'selected':''}>${s}</option>`).join('')}
                         </select>
                     </div>
-                </td></tr>`;
+                 </td></tr>`;
             }
             document.getElementById('apptTableBody').innerHTML = aHtml || '<tr><td colspan="5">暂无预约</td></tr>';
             
-            // 其他模块渲染保持原有逻辑 (不变)
+            // 回访列表
             let rHtml=''; const nowDate = getLocalToday(); let filtered = returns; const filter = window.returnFilter || 'pending';
             if(filter==='pending') filtered=returns.filter(r=>r.status===0); if(filter==='completed') filtered=returns.filter(r=>r.status===1);
-            for(let r of filtered){ const p=patients.find(p=>p.id===r.patientId); const name = p?.name || r.patientName || '?'; const phone = p?.mobile || ''; const isDue = (r.planDate <= nowDate); rHtml+=`<div class="return-card"><div class="flex-between"><div><strong>${escapeHtml(name)}</strong> ${phone?`<a href="tel:${phone}" class="phone-btn">📞</a>`:''}</div><div>${r.status===0?'<span class="status-tag status-0">待回访</span>':'<span class="status-tag status-3">已完成</span>'}</div></div><div>📅 计划: ${r.planDate} · ${r.type||'回访'} ${r.completedAt?`<br>✅ 完成于: ${r.completedAt}`:''}</div>${r.status===1 && r.customResult?`<div class="result-text">结果: ${escapeHtml(r.customResult)}</div>`:''}${r.status===0 && isDue ? `<div style="margin-top:12px;"><button class="btn-sm" onclick="completeReturn(${r.id})">完成回访</button></div>` : ''}</div>`; }
+            for(let r of filtered){ const p=patients.find(p=>p.id===r.patientId); const name = p?.name || r.patientName || '?'; const phone = p?.mobile || ''; const isDue = (r.planDate <= nowDate); rHtml+=`<div class="return-card"><div class="flex-between"><div><strong>${escapeHtml(name)}</strong> ${phone?`<a href="tel:${phone}" class="phone-btn">📞</a>`:''}</div><div>${r.status===0?'<span>待回访</span>':'<span>已完成</span>'}</div></div><div>📅 计划: ${r.planDate} · ${r.type||'回访'} ${r.completedAt?`<br>✅ 完成于: ${r.completedAt}`:''}</div>${r.status===1 && r.customResult?`<div class="result-text">结果: ${escapeHtml(r.customResult)}</div>`:''}${r.status===0 && isDue ? `<div style="margin-top:12px;"><button class="btn-sm" onclick="completeReturn(${r.id})">完成回访</button></div>` : ''}</div>`; }
             document.getElementById('returnListContainer').innerHTML = rHtml||'<div>暂无回访</div>';
+            // 订单列表
             let oHtml=''; for(let o of orders){ const p=patients.find(p=>p.id===o.patientId); const paid = payments.filter(p=>p.orderId===o.id).reduce((s,p)=>s+p.amount,0); const debt=o.totalAmount-paid; oHtml+=`<div class="order-card ${debt>0?'debt-highlight':''}"><div class="flex-between"><div><strong>${p?.name||'?'}</strong></div><div>${o.datetime||o.date}</div></div><div>项目: ${o.item}</div><div>应收: ¥${o.totalAmount.toFixed(2)} &nbsp;|&nbsp; 已收: ¥${paid.toFixed(2)} &nbsp;|&nbsp; 欠费: ¥${debt.toFixed(2)}</div>${debt>0?`<div class="debt-tag">未结清 ${debt.toFixed(2)}元</div>`:''}<div style="margin-top:10px;"><button class="btn-sm" onclick="showPaymentModal(${o.id})">💰收费</button></div></div>`; }
             document.getElementById('orderListContainer').innerHTML = oHtml||'<div>暂无开单</div>';
+            // 项目表格
             let projects = await getAll('projects'); let pjHtml=''; for(let pro of projects) pjHtml+=`<tr><td>${escapeHtml(pro.name)}</td><td>${pro.price}</td><td><button class="btn-sm btn-outline" onclick="editProject(${pro.id})">编辑</button> <button class="btn-sm btn-danger-outline" onclick="delProjectWithPwd(${pro.id})">删除</button></td></tr>`;
             document.getElementById('projectTableBody').innerHTML = pjHtml||'<tr><td colspan="3">暂无项目</td></tr>';
+            // 今日预约
             const todayAppts = appts.filter(a=>a.datetime?.split('T')[0]===today && a.status!==5); let tHtml=''; for(let a of todayAppts){ const p=patients.find(p=>p.id===a.patientId); const debt=await getPatientDebt(a.patientId); tHtml+=`<div class="appt-row ${debt>0?'debt-highlight':''}"><div><strong>${a.datetime.substring(11,16)}</strong> ${p?.name} · ${a.item||''} ${debt>0?`<span class="debt-tag">欠${debt.toFixed(2)}</span>`:''}</div></div>`; } document.getElementById('todayApptList').innerHTML = tHtml||'✨ 今日无预约';
+            // 待回访提醒
             const pendingToday = returns.filter(r=>r.status===0 && r.planDate <= today); let retHtml=''; for(let r of pendingToday.slice(0,5)){ const p=patients.find(p=>p.id===r.patientId); retHtml+=`<div class="flex-between"><span>📞 ${p?.name||r.patientName} - ${r.type||'回访'}</span><button class="btn-sm" onclick="completeReturn(${r.id})">完成</button></div>`; } document.getElementById('todayReturnList').innerHTML = retHtml||'今日无待回访任务';
+            // 月度统计
             const monthMap={}; for(let p of payments){ const m=p.date.slice(0,7); monthMap[m]=(monthMap[m]||0)+p.amount; } let sHtml=''; for(let [m,t] of Object.entries(monthMap)) sHtml+=`<tr><td>${m}</td><td>${t.toFixed(2)}</td></tr>`; document.getElementById('statsTableBody').innerHTML = sHtml||'<tr><td colspan="2">暂无数据</td></tr>';
+            // 角标更新
             document.querySelectorAll('.badge').forEach(b=>b.remove()); const pendingAppts = appts.filter(a=>a.status!==3 && a.status!==4 && a.status!==5).length; const pendingReturns = returns.filter(r=>r.status===0).length;
             if(pendingAppts>0){ const b=document.createElement('span'); b.className='badge'; b.innerText=pendingAppts>99?'99+':pendingAppts; document.querySelector('.tab[data-tab="appointments"]').appendChild(b); }
             if(pendingReturns>0){ const b=document.createElement('span'); b.className='badge'; b.innerText=pendingReturns>99?'99+':pendingReturns; document.querySelector('.tab[data-tab="returns"]').appendChild(b); }
         }
 
-        // 其余全局函数保持完全不变
+        // 全局函数定义
         window.escapeHtml = function(str){ if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); };
         window.callPatient = function(phone){ if(phone) window.location.href="tel:"+phone; };
         window.completeReturn = async function(id){ const txt=prompt('请输入回访结果:'); if(!txt || txt.trim()===''){ alert('内容不能为空'); return; } const returns=await getAll('returnVisits'); const r=returns.find(r=>r.id===id); if(r){ r.status=1; r.customResult=txt.trim(); r.completedAt = getCurrentBeijingISO(); await putData('returnVisits',r); await updatePatientLastActive(r.patientId); renderAll(); } };
